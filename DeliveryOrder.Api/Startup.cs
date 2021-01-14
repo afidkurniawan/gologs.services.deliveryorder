@@ -1,23 +1,30 @@
 using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using GoLogs.Framework.Core.Options;
 using GoLogs.Framework.Mvc;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using PostgresClient;
+using PostgresClient.DependencyInjectionExtensions;
+using PostgresClient.ManagedColumns;
 using Swashbuckle.AspNetCore.Swagger;
+using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
+using GoLogs.Services.DeliveryOrder.Api.BusinessLogic;
+using GoLogs.Services.DeliveryOrder.Api;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
@@ -98,10 +105,36 @@ namespace GoLogs.Services.DeliveryOrder.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddControllers()
-                .AddFluentValidation();
+                 .AddHttpContextAccessor()
+                 .AddControllers()
+                 .AddFluentValidation()
+                 .AddNewtonsoftJson();
+            services
+                .AddSingleton<ScopedHttpContext>()
+                .AddOptions<PgContextOptions>()
+                .Configure<ScopedHttpContext>((options, context) => options.DefaultColumns =
+                    new Collection<IDefaultColumn>
+                    {
+                        new DefaultColumn<DateTime?>(
+                            "created", (insert, update) =>
+                                insert ? (DateTime?) DateTime.Now : null),
+                        new DefaultColumn<string>(
+                            "creator", (insert, update) =>
+                                insert ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
+                        new DefaultColumn<DateTime?>(
+                            "modified", (insert, update) =>
+                                update ? (DateTime?) DateTime.Now : null),
+                        new DefaultColumn<string>(
+                            "modifier", (insert, update) =>
+                                update ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
+                    });
 
-            services.AddMediatR(typeof(Startup));
+            services
+                .AddPgContext<DOOrderContext>(options => options
+                    .UseConnectionString(Configuration.GetConnectionString("DO_Order"))
+                    .UseSoftDeleteColumn(new SoftDeleteColumn<int>(
+                        "rowstatus", delete => delete ? 1 : 0))
+                    .UseNamingConvention(NamingConvention.SnakeCase));
 
             services.AddMassTransit(mt =>
             {
@@ -109,8 +142,11 @@ namespace GoLogs.Services.DeliveryOrder.Api
             });
 
             services
-                .AddScoped<IProblemCollector, ProblemCollector>();
-            
+                .AddScoped<IProblemCollector, ProblemCollector>()
+                .AddScoped<IDOOrderLogic, DOOrderLogic>()
+                .AddFluentValidators()
+                .AddAutoMapper(typeof(Startup));
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
@@ -150,13 +186,11 @@ namespace GoLogs.Services.DeliveryOrder.Api
                 });
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
     }
 }

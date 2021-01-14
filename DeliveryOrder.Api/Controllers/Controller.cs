@@ -1,4 +1,7 @@
+using AutoMapper;
 using GoLogs.Framework.Mvc;
+using GoLogs.Services.DeliveryOrder.Api.BusinessLogic;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,12 +11,17 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
     {
         private readonly IProblemCollector _problemCollector;
 
-        protected readonly IMediator Mediator;
-        
-        public Controller(IProblemCollector problemCollector, IMediator mediator)
+        protected readonly IDOOrderLogic DOOrderLogic;
+        protected readonly IMapper Mapper;
+        protected readonly IPublishEndpoint PublishEndpoint;
+
+        public Controller(IDOOrderLogic doorderlogic, IProblemCollector problemCollector,
+            IMapper mapper, IPublishEndpoint publishEndpoint)
         {
             _problemCollector = problemCollector;
-            Mediator = mediator;
+            DOOrderLogic = doorderlogic;
+            Mapper = mapper;
+            PublishEndpoint = publishEndpoint;
         }
 
         protected ObjectResult CheckProblems()
