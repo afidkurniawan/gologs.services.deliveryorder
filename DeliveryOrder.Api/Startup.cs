@@ -25,6 +25,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using GoLogs.Services.DeliveryOrder.Api.BusinessLogic;
 using GoLogs.Services.DeliveryOrder.Api;
+using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
@@ -104,6 +105,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddMediatR(typeof(Startup));
             services
                  .AddHttpContextAccessor()
                  .AddControllers()

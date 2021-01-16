@@ -8,7 +8,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.BusinessLogic
     public interface IDOOrderLogic
     {
         Task CreateDOOrderAsync(DOOrder newDoOrder);
-        Task<DOOrder[]> GetAllDOOrderAsync();
+        Task<IList<DOOrder>> GetAllDOOrderAsync();
         Task<DOOrder> GetAllDOOrderByDoNumberAsync(string doOrderNumber);
         Task<DOOrder> GetDOOrderByIdAsync(int Id);
     }

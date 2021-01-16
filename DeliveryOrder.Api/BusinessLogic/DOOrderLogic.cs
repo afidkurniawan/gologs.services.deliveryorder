@@ -35,9 +35,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.BusinessLogic
             }
         }       
 
-        public async Task<DOOrder[]> GetAllDOOrderAsync()
+        public async Task<IList<DOOrder>> GetAllDOOrderAsync()
         {
-            return await _context.Doorders.ToArrayAsync();
+            return await _context.Doorders.AllAsync(new Query().ForPage(1, 3));
         }
 
         public async Task<DOOrder> GetAllDOOrderByDoNumberAsync(string doOrderNumber)

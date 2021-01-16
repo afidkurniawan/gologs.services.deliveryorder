@@ -14,14 +14,16 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         protected readonly IDOOrderLogic DOOrderLogic;
         protected readonly IMapper Mapper;
         protected readonly IPublishEndpoint PublishEndpoint;
+        protected readonly IMediator _mediator;
 
         public Controller(IDOOrderLogic doorderlogic, IProblemCollector problemCollector,
-            IMapper mapper, IPublishEndpoint publishEndpoint)
+            IMapper mapper, IPublishEndpoint publishEndpoint, IMediator mediator)
         {
             _problemCollector = problemCollector;
             DOOrderLogic = doorderlogic;
             Mapper = mapper;
             PublishEndpoint = publishEndpoint;
+            _mediator = mediator;
         }
 
         protected ObjectResult CheckProblems()

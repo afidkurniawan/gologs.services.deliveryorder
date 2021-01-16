@@ -1,4 +1,4 @@
-using GoLogs.Interfaces;
+using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 
 // ReSharper disable InconsistentNaming
@@ -6,13 +6,14 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {
     public class CreateOrderCommand : IRequest<int>
     {
-        public IDOOrder DOOrder { get; }
+        //public DOOrder dorequest { get; }
+        ICreateDOOrder DoOrder { get; }
 
         public CreateOrderCommand() { }
 
-        public CreateOrderCommand(IDOOrder doOrder)
+        public CreateOrderCommand(ICreateDOOrder doorder)
         {
-            DOOrder = doOrder;
+            DoOrder = doorder;
         }
     }
 }
