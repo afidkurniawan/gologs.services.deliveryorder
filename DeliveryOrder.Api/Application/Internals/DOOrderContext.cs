@@ -9,7 +9,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Application.Internals
 {
     public class DOOrderContext : PgContext
     {
-        public PgTable<DOOrder> Doorders { get; set; }
+        public PgTable<DOOrder> DOOrders { get; set; }
         public DOOrderContext(IOptions<PgContextOptions> options) : base(options)
         {
         }

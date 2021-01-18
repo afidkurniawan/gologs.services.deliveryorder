@@ -21,7 +21,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
         public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
-            return await _context.Doorders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.Id), request.Id));
+            return await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.Id), request.Id));
         }
         
     }

@@ -4,7 +4,6 @@ using AutoMapper;
 using GoLogs.Events;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
-using GoLogs.Services.DeliveryOrder.Api.BusinessLogic;
 using GoLogs.Services.DeliveryOrder.Api.Commands;
 using GoLogs.Services.DeliveryOrder.Api.Infrastructure.Messaging.Events;
 using GoLogs.Services.DeliveryOrder.Api.Models;
@@ -20,9 +19,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
     // ReSharper disable once InconsistentNaming
     public class DOOrdersController : Controller
     {
-        public DOOrdersController(IDOOrderLogic doOrderLogic, IProblemCollector problemCollector, IMapper mapper,
-            IPublishEndpoint publishEndpoint,IMediator mediator)
-            : base(doOrderLogic, problemCollector, mapper, publishEndpoint,mediator)
+        public DOOrdersController(IProblemCollector problemCollector, IMapper mapper,
+            IPublishEndpoint publishEndpoint, IMediator mediator)
+            : base(problemCollector, mapper, publishEndpoint, mediator)
         {
         }
         /// <summary>
@@ -38,7 +37,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         public async Task<ActionResult<IDOOrder>> GetAsync(int id)
         {            
             var errorResult = CheckProblems();
-            var response = await _mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetById.Request { Id=id});
+            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetById.Request { Id=id});
             return Ok(response);
         }
         /// <summary>
@@ -54,7 +53,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         public async Task<ActionResult<IDOOrder>> GetAsync(string doordernumber)
         {
             var errorResult = CheckProblems();
-            var response = await _mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber.Request { DoNumber = doordernumber });
+            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber.Request { DoNumber = doordernumber });
             return Ok(response);
         }
         /// <summary>
@@ -71,7 +70,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         public async Task<ActionResult<IList<IDOOrder>>> GetAsync(int page, int pagesize)
         {
             var errorResult = CheckProblems();
-            var response = await _mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetList.Request { Page = page,PageSize = pagesize });
+            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetList.Request { Page = page,PageSize = pagesize });
             return Ok(response);
         }
         /// <summary>
@@ -89,7 +88,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         public async Task<ActionResult<IList<IDOOrder>>> GetAsync(int cargoownerid,int page, int pagesize)
         {
             var errorResult = CheckProblems();
-            var response = await _mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId.Request { CargoOwnerId = cargoownerid ,Page = page, PageSize = pagesize });
+            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId.Request { CargoOwnerId = cargoownerid ,Page = page, PageSize = pagesize });
             return Ok(response);
         }
         /// <summary>
@@ -104,7 +103,10 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         {
             var doorder = Mapper.Map<DOOrder>(doOrderInput);
             var errorResult = CheckProblems();            
-            await _mediator.Send(doorder);
+            await Mediator.Send(doorder);            
+            await PublishEndpoint.Publish<IDOOrder>(new { DODoOrderNumber = doorder.DoOrderNumber}); // 1
+
+            //await _mediator.Publish<IDOOrder>(new { DODoOrderNumber = "" }); // 2
             return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = doorder.Id }, doorder);             
         }
     }

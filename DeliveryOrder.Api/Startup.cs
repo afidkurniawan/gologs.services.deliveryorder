@@ -23,8 +23,6 @@ using PostgresClient.DependencyInjectionExtensions;
 using PostgresClient.ManagedColumns;
 using Swashbuckle.AspNetCore.Swagger;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
-using GoLogs.Services.DeliveryOrder.Api.BusinessLogic;
-using GoLogs.Services.DeliveryOrder.Api;
 using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api
@@ -145,7 +143,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
 
             services
                 .AddScoped<IProblemCollector, ProblemCollector>()
-                .AddScoped<IDOOrderLogic, DOOrderLogic>()
+                //.AddScoped<IDOOrderLogic, DOOrderLogic>()
                 .AddFluentValidators()
                 .AddAutoMapper(typeof(Startup));
 
