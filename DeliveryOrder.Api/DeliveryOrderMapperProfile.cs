@@ -8,6 +8,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
         public DeliveryOrderMapperProfile()
         {            
             CreateMap<DOOrderDto, DOOrder>();
+            CreateMap<HistoryDto, History>();
         }
     }
 }

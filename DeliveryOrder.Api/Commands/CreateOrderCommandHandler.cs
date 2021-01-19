@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using GoLogs.Framework.Mvc;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
+using GoLogs.Services.DeliveryOrder.Api.Enum;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 using Nirbito.Framework.Core;
@@ -28,7 +29,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             int lastDoOrdersId = doOrders.Count + 1;
             var doNumber = "DO" + lastDoOrdersId;
             createOrderCommand.DoOrderNumber = doNumber;            
-            await _context.DOOrders.InsertAsync(createOrderCommand);              
+            await _context.DOOrders.InsertAsync(createOrderCommand);            
+            //await _context.Histories.InsertAsync(new History{ DoNumber = doNumber, StateId = (int)StateEnum.Created});
             return await Task.FromResult(1);
         }
     }
