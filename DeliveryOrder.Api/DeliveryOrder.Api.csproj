@@ -51,9 +51,5 @@
       <None Include="..\.editorconfig" Link=".editorconfig" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="database\" />
-    </ItemGroup>
-
 
 </Project>
