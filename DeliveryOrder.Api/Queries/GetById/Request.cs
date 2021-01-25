@@ -9,6 +9,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
     public class Request : IRequest<DOOrder>
     {
+        /// <summary>
+        /// The ID of DOOrder data you wanto to find
+        /// </summary>
         public int Id { get; set; }
 
     }

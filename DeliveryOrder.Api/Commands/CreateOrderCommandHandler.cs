@@ -17,7 +17,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 
         public CreateOrderCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
         {
-            _context = context;
+            _context = context;            
             _problemCollector = problemCollector;
         }
         
@@ -28,10 +28,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             var doOrders = await _context.DOOrders.AllAsync(new Query().Where(nameof(createOrderCommand.CargoOwnerId), cargoOwnerId));
             int lastDoOrdersId = doOrders.Count + 1;
             var doNumber = "DO" + lastDoOrdersId;
-            createOrderCommand.DoOrderNumber = doNumber;            
+            createOrderCommand.DoOrderNumber = doNumber;
+            
             await _context.DOOrders.InsertAsync(createOrderCommand);            
-            //await _context.Histories.InsertAsync(new History{ DoNumber = doNumber, StateId = (int)StateEnum.Created});
             return await Task.FromResult(1);
         }
+
     }
 }

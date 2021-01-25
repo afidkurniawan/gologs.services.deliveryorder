@@ -129,12 +129,16 @@ namespace GoLogs.Services.DeliveryOrder.Api
                                 update ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
                     });
 
-            services
+
+            services                
                 .AddPgContext<DOOrderContext>(options => options
                     .UseConnectionString(Configuration.GetConnectionString("DO_Order"))
                     .UseSoftDeleteColumn(new SoftDeleteColumn<int>(
                         "rowstatus", delete => delete ? 1 : 0))
                     .UseNamingConvention(NamingConvention.SnakeCase));
+
+
+
 
             services.AddMassTransit(mt =>
             {

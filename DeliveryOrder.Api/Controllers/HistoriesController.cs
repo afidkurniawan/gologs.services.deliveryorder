@@ -20,6 +20,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
           : base(problemCollector, mapper, publishEndpoint, mediator)
         {
         }
+        /// <summary>
+        /// Get single row of history by Id history
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -31,8 +36,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryById.Request { Id = id });
             return Ok(response);
         }
-        [HttpGet]
-        //[Route("{page:int}/{pagesize:int}")]
+        /// <summary>
+        /// Get list of histories with paging
+        /// </summary>
+        /// <param name="page"></param>
+        /// <param name="pagesize"></param>
+        /// <returns></returns>
+        [HttpGet]        
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -42,16 +52,20 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryList.Request { Page = page, PageSize = pagesize });
             return Ok(response);
         }
-
+        /// <summary>
+        /// Create history of DOOrder State
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateAsync([FromBody] HistoryDto historyInput)
+        public async Task<ActionResult> CreateAsync([FromBody] HistoryDto input)
         {
-            var history = Mapper.Map<History>(historyInput);
+            var history = Mapper.Map<History>(input);
             var errorResult = CheckProblems();
-            await Mediator.Send(history);
-            await PublishEndpoint.Publish<IHistory>(new { DoNumber = history.DoNumber, StateId = history.StateId }); // 1            
+            await Mediator.Send(history);            
+            await PublishEndpoint.Publish<IHistory>(new { DODoNumber = history.DOOrderNumber, StateId = history.StateId });
             return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = history.Id }, history);
         }
     }

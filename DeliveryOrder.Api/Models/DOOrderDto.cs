@@ -4,7 +4,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Models
     public class DOOrderDto : IRequest<int>
     {
         /// <summary>
-        /// ID customer pengaju  
+        /// CargoOwnerId : the Id of DOOrder request
         /// </summary>
         public int CargoOwnerId { get; set; }
     }

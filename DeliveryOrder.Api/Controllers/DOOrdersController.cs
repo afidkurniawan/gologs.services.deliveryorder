@@ -103,10 +103,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         {
             var doorder = Mapper.Map<DOOrder>(doOrderInput);
             var errorResult = CheckProblems();            
-            await Mediator.Send(doorder);            
-            await PublishEndpoint.Publish<IDOOrder>(new { DODoOrderNumber = doorder.DoOrderNumber}); // 1
-
-            //await _mediator.Publish<IDOOrder>(new { DODoOrderNumber = "" }); // 2
+            await Mediator.Send(doorder);       
+            await PublishEndpoint.Publish<IDOOrder>(new { DODoOrderNumber = doorder.DoOrderNumber});             
             return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = doorder.Id }, doorder);             
         }
     }
