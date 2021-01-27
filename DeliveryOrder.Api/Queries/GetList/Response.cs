@@ -8,6 +8,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
     public class Response
     {
+        /// <summary>
+        /// Responses for DOOrdersController GetAsync with paging
+        /// </summary>
         public IList<DOOrder> DoOrders{ get; set; }
 
 }

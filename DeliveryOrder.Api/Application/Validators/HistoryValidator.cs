@@ -7,15 +7,13 @@ using System.Threading.Tasks;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Application.Validators
 {
-    public class DOOrderValidator : AbstractValidator<DOOrderDto>
+    public class HistoryValidator : AbstractValidator<HistoryDto>
     {
         /// <summary>
-        /// To Validate parameter when create DOOrderNumber
+        /// To Validate parameter when create history
         /// </summary>
-        public DOOrderValidator() {
-            RuleFor(c => c.CargoOwnerId)
-                .NotNull()
-                .InclusiveBetween(1, Int32.MaxValue);
+        public HistoryValidator() {
+            RuleFor(c => c.DOOrderNumber).NotEmpty().WithMessage("Please specify a DO Order Number");               
         }
     }
 }

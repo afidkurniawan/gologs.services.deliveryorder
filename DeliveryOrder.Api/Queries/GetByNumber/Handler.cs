@@ -18,6 +18,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
             _context = context;
             _problemCollector = problemCollector;
         }
+        /// <summary>
+        /// Hanlde to get an DOOrder with parameter from Request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>DOOrder</returns>
         public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));

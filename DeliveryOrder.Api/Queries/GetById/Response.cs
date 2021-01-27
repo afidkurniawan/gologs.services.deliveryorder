@@ -8,6 +8,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
     public class Response
     {
+        /// <summary>
+        /// Responses for DOOrdersController GetAsync by Id
+        /// </summary>
         public DOOrder DoOrder{ get; set; }
 
 }

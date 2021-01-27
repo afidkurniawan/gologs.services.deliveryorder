@@ -10,6 +10,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryList
     public class Request : IRequest<IList<History>>
     {
         /// <summary>
+        /// Get List of Histories with paging
         /// Page : the page number of history data you want to display
         /// PageSize : the number of rows of history data on each page that you want to display
         /// </summary>

@@ -19,8 +19,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 
     public class CreateHistoryCommandHandler : IRequestHandler<History, int>
     {
-        private DOOrderContext _context;
-        private IProblemCollector _problemCollector;
+        private readonly DOOrderContext _context;
+        private readonly IProblemCollector _problemCollector;
         private readonly IBus _bus;
         public CreateHistoryCommandHandler(DOOrderContext context, IProblemCollector problemCollector,IBus bus)
         {
@@ -28,6 +28,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             _problemCollector = problemCollector;
             _bus = bus;
         }
+        /// <summary>
+        /// Handle for Create History Created State and Publish event to Rabbit MQ using IBus
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public async Task<int> Handle(History request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));

@@ -10,7 +10,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
     public class Request : IRequest<DOOrder>
     {
         /// <summary>
-        /// The ID of DOOrder data you wanto to find
+        /// <c>Get DOOrder </c>associated with the specified ID (int)
         /// </summary>
         public int Id { get; set; }
 

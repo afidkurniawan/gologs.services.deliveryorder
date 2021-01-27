@@ -24,11 +24,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             : base(problemCollector, mapper, publishEndpoint, mediator)
         {
         }
-        /// <summary>
-        /// Retrieving DOOrder using Id parameter of type int, has a single row return
+        /// <summary>        
+        /// Get DOOrder associated with the specified ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns>IDOOrder</returns>        
+        /// <returns><strong> A Row data of DOOrder </strong>></returns>        
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -41,10 +41,10 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return Ok(response);
         }
         /// <summary>
-        /// Retrieving DOOrder using DoOrderNumber parameter of type string, has a single row return
+        /// Get DOOrder associated with the specified DO Order Number
         /// </summary>
         /// <param name="doordernumber"></param>
-        /// <returns>IDOOrder</returns>        
+        /// <returns><strong> A Row data of DOOrder </strong>></returns>        
         [HttpGet]
         [Route("{donumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -57,11 +57,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return Ok(response);
         }
         /// <summary>
-        /// Retrieving List of DOOrder using page and pagesize parameter of type int,has a many row return
+        /// Get List of DOOrder with paging
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pagesize"></param>
-        /// <returns></returns>
+        /// <returns><strong>List of DOOrder</strong>></returns>        
         [HttpGet]
         [Route("{page:int}/{pagesize:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,12 +74,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return Ok(response);
         }
         /// <summary>
-        /// Retrieving List of DOOrder using cargoownerid, page and pagesize parameter of type int,has a many row return
+        /// Get List of DOOrder with paging and associated with the specified Cargo Owner Id
         /// </summary>
         /// <param name="cargoownerid"></param>
         /// <param name="page"></param>
         /// <param name="pagesize"></param>
-        /// <returns></returns>
+        /// <returns><strong>List of DOOrder</strong>></returns>  
         [HttpGet]
         [Route("{cargoownerid:int}/{page:int}/{pagesize:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -92,10 +92,10 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return Ok(response);
         }
         /// <summary>
-        /// Create DOOrder data, parameter that send only CargoOwnerId
+        /// Create DOOrder data, parameter that send only CargoOwnerId And Publish DOOrderCreatedEvent to Rabbit MQ
         /// </summary>
         /// <param name="doOrderInput"></param>
-        /// <returns></returns>
+        /// <returns>A row the data you just created</returns>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

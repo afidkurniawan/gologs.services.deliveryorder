@@ -8,6 +8,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId
 {
     public class Response
     {
+        /// <summary>
+        /// Responses for DOOrdersController GetAsync CargoOwnerId and paging
+        /// </summary>
         public IList<DOOrder> DoOrders{ get; set; }
 
 }

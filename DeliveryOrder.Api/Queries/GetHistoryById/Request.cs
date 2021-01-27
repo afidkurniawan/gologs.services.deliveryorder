@@ -10,7 +10,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryById
     public class Request : IRequest<History>
     {
         /// <summary>
-        /// The ID of Hitory data you wanto to find
+        /// Get History associated with the specified ID
         /// </summary>
         public int Id { get; set; }
 

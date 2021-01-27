@@ -4,6 +4,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
     public class History : HistoryDto, IEntity
     {
+        /// <summary>
+        /// History Entity Model
+        /// </summary>
         [Key]
         public int Id { get; set ; }
         public int StateId { get; set; }

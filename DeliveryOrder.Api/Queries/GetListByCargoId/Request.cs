@@ -10,7 +10,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId
     public class Request : IRequest<IList<DOOrder>>
     {
         /// <summary>
-        /// CargoOwnerId : the Id of DOOrder request
+        /// Get List of DOOrder associated with the specified Cargo Owner Id and paging
         /// Page : the page number of DOOrder data you want to display
         /// PageSize : the number of rows of DOOrder data on each page that you want to display
         /// </summary>

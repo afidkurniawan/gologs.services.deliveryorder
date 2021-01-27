@@ -8,6 +8,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
 {
     public class Response
     {
+        /// <summary>
+        /// Responses for DOOrdersController GetAsync by DOOrder Number
+        /// </summary>
         public DOOrder DoOrder{ get; set; }
 
 }

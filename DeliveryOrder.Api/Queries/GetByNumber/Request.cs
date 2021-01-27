@@ -10,7 +10,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
     public class Request : IRequest<DOOrder>
     {
         /// <summary>
-        /// The DO Order Number of DOOrder data you wanto to find
+        /// Get DOOrder associated with the specified DO Order Number (string)
         /// </summary>
         public string DoNumber { get; set; }
 

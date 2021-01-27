@@ -8,6 +8,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryList
 {
     public class Response
     {
+        /// <summary>
+        /// Responses for HistoriesController  GetAsync
+        /// </summary>
         public IList<History> Histories{ get; set; }
 
 }

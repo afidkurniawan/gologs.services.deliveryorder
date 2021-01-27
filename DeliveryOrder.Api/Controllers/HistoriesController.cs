@@ -21,10 +21,10 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         {
         }
         /// <summary>
-        /// Get single row of history by Id history
+        /// Get History associated with the specified ID
         /// </summary>
         /// <param name="id"></param>
-        /// <returns></returns>
+        /// <returns><strong> A Row data of History </strong>></returns>     
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,11 +37,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return Ok(response);
         }
         /// <summary>
-        /// Get list of histories with paging
+        /// Get List of History with paging
         /// </summary>
         /// <param name="page"></param>
         /// <param name="pagesize"></param>
-        /// <returns></returns>
+        /// <returns><strong> List of History </strong>></returns>     
         [HttpGet]        
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -56,7 +56,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// Create history of DOOrder State
         /// </summary>
         /// <param name="input"></param>
-        /// <returns></returns>
+        /// <returns><strong> A row the data you just created </strong>></returns>     
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

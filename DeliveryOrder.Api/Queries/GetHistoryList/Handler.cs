@@ -19,6 +19,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetHistoryList
             _context = context;
             _problemCollector = problemCollector;
         }
+        /// <summary>
+        /// Hanlde to get an DOOrder with parameter from Request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns>List of Histories</returns>
         public async Task<IList<History>> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
