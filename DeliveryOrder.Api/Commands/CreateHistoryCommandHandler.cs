@@ -1,5 +1,4 @@
-﻿using Automatonymous;
-using GoLogs.Framework.Mvc;
+﻿using GoLogs.Framework.Mvc;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using GoLogs.Services.DeliveryOrder.Api.Enum;
 using GoLogs.Services.DeliveryOrder.Api.Models;
@@ -38,19 +37,19 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         {
             Check.NotNull(request, nameof(request));
             var doorder = await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.DoOrderNumber), request.DOOrderNumber));
-            if (doorder != null) {
-                request.StateId = (int)StateEnum.Created;
-                await _context.Histories.InsertAsync(request);
+            if (doorder == null) throw new KeyNotFoundException("DOOrderNumber not found!");                        
 
-                var createHistoryInitiatedEvent = new CreateHistoryInitiatedEvent 
-                { 
-                    DOOrderNumber = request.DOOrderNumber,
-                    StateId = (int)StateEnum.Created
-                };
-                await _bus.Publish(createHistoryInitiatedEvent);                
-                return await Task.FromResult(1);
-            }
-            return await Task.FromResult(0);
+            request.StateId = (int)StateEnum.Created;
+            await _context.Histories.InsertAsync(request);
+            var createHistoryInitiatedEvent = new CreateHistoryInitiatedEvent 
+            { 
+                DOOrderNumber = request.DOOrderNumber,
+                StateId = (int)StateEnum.Created
+            };
+            await _bus.Publish(createHistoryInitiatedEvent);                
+            return await Task.FromResult(1);
+            
+            
         }     
     }
 }

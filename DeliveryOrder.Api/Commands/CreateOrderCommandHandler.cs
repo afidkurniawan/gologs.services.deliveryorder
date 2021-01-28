@@ -2,7 +2,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using GoLogs.Framework.Mvc;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
-using GoLogs.Services.DeliveryOrder.Api.Enum;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 using Nirbito.Framework.Core;
