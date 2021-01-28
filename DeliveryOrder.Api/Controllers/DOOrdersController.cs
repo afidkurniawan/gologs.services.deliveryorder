@@ -43,17 +43,17 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <summary>
         /// Get DOOrder associated with the specified DO Order Number
         /// </summary>
-        /// <param name="doordernumber"></param>
+        /// <param name="donumber"></param>
         /// <returns><strong> A Row data of DOOrder </strong>></returns>        
         [HttpGet]
         [Route("{donumber}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IDOOrder>> GetAsync(string doordernumber)
+        public async Task<ActionResult<IDOOrder>> GetAsync(string donumber)
         {
             var errorResult = CheckProblems();
-            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber.Request { DoNumber = doordernumber });
+            var response = await Mediator.Send(new GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber.Request { DoNumber = donumber });
             return Ok(response);
         }
         /// <summary>
