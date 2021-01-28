@@ -27,12 +27,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         /// <returns></returns>
         public async Task<int> Handle(DOOrder createOrderCommand, CancellationToken cancellationToken = default)
         {
-            Check.NotNull(createOrderCommand, nameof(createOrderCommand));
-            var cargoOwnerId = createOrderCommand.CargoOwnerId;
-            var doOrders = await _context.DOOrders.AllAsync(new Query().Where(nameof(createOrderCommand.CargoOwnerId), cargoOwnerId));
-            int lastDoOrdersId = doOrders.Count + 1;
-            var doNumber = "DO" + lastDoOrdersId;
-            createOrderCommand.DoOrderNumber = doNumber;            
+            Check.NotNull(createOrderCommand, nameof(createOrderCommand));            
+            var lastdata = await _context.DOOrders.AllAsync(new Query().SelectRaw("max(id) "));
+            int lastid = lastdata[0].Id;
+            lastid += 1;
+            var DOOrderNumber = "DO" + lastid;
+            createOrderCommand.DOOrderNumber = DOOrderNumber;            
             await _context.DOOrders.InsertAsync(createOrderCommand);            
             return await Task.FromResult(1);
         }

@@ -19,7 +19,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
             _problemCollector = problemCollector;
         }
         /// <summary>
-        /// Hanlde to get an DOOrder with parameter from Request
+        /// Handle to get an DOOrder associated with the specified DOOrderNumer
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -27,7 +27,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
         public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
-            return await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.DoOrderNumber), request.DoNumber));
+            return await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.DOOrderNumber), request.DoNumber));
         }
         
     }

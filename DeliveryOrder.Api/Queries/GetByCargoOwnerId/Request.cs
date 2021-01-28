@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId
+namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
 {
     public class Request : IRequest<IList<DOOrder>>
     {
@@ -14,9 +14,6 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId
         /// Page : the page number of DOOrder data you want to display
         /// PageSize : the number of rows of DOOrder data on each page that you want to display
         /// </summary>
-        public int CargoOwnerId { get; set; }
-        public int Page { get; set; }
-        public int PageSize { get; set; }
-
+        public int CargoOwnerId { get; set; }        
     }
 }

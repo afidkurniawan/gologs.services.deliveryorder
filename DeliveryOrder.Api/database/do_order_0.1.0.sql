@@ -15,21 +15,36 @@
 --GRANT ALL ON SCHEMA public TO public;
 
 -- public.do_order definition
+-- Table: public.do_order
 
--- Drop table
---DROP TABLE public.do_order;
+-- DROP TABLE public.do_order;
 
-CREATE TABLE public.do_order (
-	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	rowstatus int2 NOT NULL DEFAULT 0,
-	cargo_owner_id int4 NOT NULL,
-	do_order_number varchar(24) NOT NULL,
-	created timestamp NOT NULL,
-	creator varchar(64) NOT NULL,
-	modified timestamp NULL,
-	modifier varchar(64) NULL,
-	CONSTRAINT do_order_id_pk PRIMARY KEY (id)
-);
+CREATE TABLE public.do_order
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    rowstatus smallint NOT NULL DEFAULT 0,
+    cargo_owner_id integer NOT NULL,
+    do_order_number character varying(24) COLLATE pg_catalog."default" NOT NULL,
+    created timestamp without time zone NOT NULL,
+    creator character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    modified timestamp without time zone,
+    modifier character varying(64) COLLATE pg_catalog."default",
+    CONSTRAINT do_order_id_pk PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.do_order
+    OWNER to postgres;
+-- Index: do_order_do_order_number_key
+
+-- DROP INDEX public.do_order_do_order_number_key;
+
+CREATE UNIQUE INDEX do_order_do_order_number_key
+    ON public.do_order USING btree
+    (do_order_number COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default
+    WHERE rowstatus = 0;
 
 --DROP TABLE public.schema_migration;
 CREATE TABLE public.schema_migration (
@@ -73,21 +88,36 @@ SET    up_script ='
 --GRANT ALL ON SCHEMA public TO public;
 
 -- public.do_order definition
+-- Table: public.do_order
 
--- Drop table
----DROP TABLE public.do_order;
+-- DROP TABLE public.do_order;
 
-CREATE TABLE public.do_order (
-	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	rowstatus int2 NOT NULL DEFAULT 0,
-	cargo_owner_id int4 NOT NULL,
-	do_order_number varchar(24) NOT NULL,
-	created timestamp NOT NULL,
-	creator varchar(64) NOT NULL,
-	modified timestamp NULL,
-	modifier varchar(64) NULL,
-	CONSTRAINT do_order_id_pk PRIMARY KEY (id)
-);
+CREATE TABLE public.do_order
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    rowstatus smallint NOT NULL DEFAULT 0,
+    cargo_owner_id integer NOT NULL,
+    do_order_number character varying(24) COLLATE pg_catalog."default" NOT NULL,
+    created timestamp without time zone NOT NULL,
+    creator character varying(64) COLLATE pg_catalog."default" NOT NULL,
+    modified timestamp without time zone,
+    modifier character varying(64) COLLATE pg_catalog."default",
+    CONSTRAINT do_order_id_pk PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.do_order
+    OWNER to postgres;
+-- Index: do_order_do_order_number_key
+
+-- DROP INDEX public.do_order_do_order_number_key;
+
+CREATE UNIQUE INDEX do_order_do_order_number_key
+    ON public.do_order USING btree
+    (do_order_number COLLATE pg_catalog."default" ASC NULLS LAST)
+    TABLESPACE pg_default
+    WHERE rowstatus = 0;
 
 --DROP TABLE public.schema_migration;
 CREATE TABLE public.schema_migration (

@@ -8,7 +8,7 @@ using MediatR;
 using Nirbito.Framework.Core;
 using SqlKata;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
+namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
 {
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
@@ -20,7 +20,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
             _problemCollector = problemCollector;
         }
         /// <summary>
-        /// Handle to get an List of DOOrder with the specified Page and PageSize
+        /// Handle to get list of DOOrder with the specified CargoOwnerId, Page and PageSize
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>
@@ -28,7 +28,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
         public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
-            return await _context.DOOrders.AllAsync(new Query().ForPage(request.Page,request.PageSize));
+            return await _context.DOOrders.AllAsync(new Query().Where(nameof(DOOrder.CargoOwnerId),request.CargoOwnerId).ForPage(request.Page,request.PageSize));
         }
         
     }

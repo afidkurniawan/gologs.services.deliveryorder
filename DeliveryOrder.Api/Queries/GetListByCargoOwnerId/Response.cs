@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoId
+namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
 {
     public class Response
     {

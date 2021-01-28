@@ -19,7 +19,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
             _problemCollector = problemCollector;
         }
         /// <summary>
-        /// Hanlde to get an DOOrder with parameter from Request
+        /// Handle to get an DOOrder associated with the specified Id
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cancellationToken"></param>

@@ -11,9 +11,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 
         public CreateOrderCommand() { }
 
-        public CreateOrderCommand(ICreateDOOrder doorder)
+        public CreateOrderCommand(ICreateDOOrder doOrder)
         {
-            DoOrder = doorder;
+            DoOrder = doOrder;
         }
     }
 }
