@@ -17,8 +17,7 @@
 -- public.do_order definition
 
 -- Drop table
-
--- DROP TABLE public.do_order;
+--DROP TABLE public.do_order;
 
 CREATE TABLE public.do_order (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -32,26 +31,51 @@ CREATE TABLE public.do_order (
 	CONSTRAINT do_order_id_pk PRIMARY KEY (id)
 );
 
--- Permissions
+--DROP TABLE public.schema_migration;
+CREATE TABLE public.schema_migration (
+    id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+    version_major int2 NOT NULL,
+    version_minor int2 NOT NULL,
+    version_patch int2 NOT NULL,
+    db_version varchar(17) GENERATED ALWAYS AS (CAST(version_major AS varchar(5)) || '.' || CAST(version_minor AS varchar(5)) || '.' || CAST(version_patch AS varchar(5))) STORED,
+    app_version varchar NOT NULL,
+    up_script text NOT NULL,
+    down_script text NOT NULL,
+    applied timestamp NOT NULL,
+    CONSTRAINT schema_migration_pk PRIMARY KEY (id)
+);
 
-ALTER TABLE public.do_order OWNER TO postgres;
-GRANT ALL ON TABLE public.do_order TO postgres;
+
 
 ------------------------------------------------------------------------------------------------------------------------
 -- DATA
 ------------------------------------------------------------------------------------------------------------------------
-
+INSERT INTO public.schema_migration
+(version_major, version_minor, version_patch, app_version, up_script, down_script, applied)
+VALUES (0, 1, 0, '0.1.0', '', '', CURRENT_TIMESTAMP);
 
 UPDATE schema_migration
 SET    up_script ='
 ------------------------------------------------------------------------------------------------------------------------
 -- SCHEMA
 ------------------------------------------------------------------------------------------------------------------------
+
+-- DROP SCHEMA public;
+
+--CREATE SCHEMA public AUTHORIZATION postgres;
+
+---COMMENT ON SCHEMA public IS standard public schema;
+
+
+-- Permissions
+
+--GRANT ALL ON SCHEMA public TO postgres;
+--GRANT ALL ON SCHEMA public TO public;
+
 -- public.do_order definition
 
 -- Drop table
-
--- DROP TABLE public.do_order;
+---DROP TABLE public.do_order;
 
 CREATE TABLE public.do_order (
 	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
@@ -65,9 +89,26 @@ CREATE TABLE public.do_order (
 	CONSTRAINT do_order_id_pk PRIMARY KEY (id)
 );
 
--- Permissions
+--DROP TABLE public.schema_migration;
+CREATE TABLE public.schema_migration (
+    id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+    version_major int2 NOT NULL,
+    version_minor int2 NOT NULL,
+    version_patch int2 NOT NULL,
+    db_version varchar(17) GENERATED ALWAYS AS (CAST(version_major AS varchar(5)) || ''.'' || CAST(version_minor AS varchar(5)) ||''.'' || CAST(version_patch AS varchar(5))) STORED,
+    app_version varchar NOT NULL,
+    up_script text NOT NULL,
+    down_script text NOT NULL,
+    applied timestamp NOT NULL,
+    CONSTRAINT schema_migration_pk PRIMARY KEY (id)
+);
 
-ALTER TABLE public.do_order OWNER TO postgres;
-GRANT ALL ON TABLE public.do_order TO postgres;
-'
+
+
+------------------------------------------------------------------------------------------------------------------------
+-- DATA
+------------------------------------------------------------------------------------------------------------------------
+INSERT INTO public.schema_migration
+(version_major, version_minor, version_patch, app_version, up_script, down_script, applied)
+VALUES (0, 1, 0, ''0.1.0'', '', '', CURRENT_TIMESTAMP);'
 WHERE db_version = '0.1.0';
