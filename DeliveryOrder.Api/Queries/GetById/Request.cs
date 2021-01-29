@@ -9,10 +9,15 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
     public class Request : IRequest<DOOrder>
     {
+        public Request(int id)
+        {
+            Id = id;
+        }
+
         /// <summary>
         /// <c>Get DOOrder </c>associated with the specified ID (int)
         /// </summary>
-        public int Id { get; set; }
+        public int Id { get; }
 
     }
 }
