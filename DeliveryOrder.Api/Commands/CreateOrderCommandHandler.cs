@@ -1,3 +1,9 @@
+// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Threading;
 using System.Threading.Tasks;
 using GoLogs.Framework.Mvc;
@@ -14,13 +20,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         {
             _problemCollector = problemCollector;
         }
-        
+
         public async Task<int> Handle(CreateOrderCommand createOrderCommand, CancellationToken cancellationToken = default)
         {
             Check.NotNull(createOrderCommand, nameof(createOrderCommand));
-            
+
             // return await _context.DOOrders.Insert(createOrderCommand.DOOrder);
-            
             return await Task.FromResult(1);
         }
     }

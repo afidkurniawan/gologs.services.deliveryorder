@@ -1,3 +1,9 @@
+// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Threading.Tasks;
 using GoLogs.Events;
 using GoLogs.Framework.Mvc;
@@ -12,6 +18,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+
     // ReSharper disable once InconsistentNaming
     public class DOOrdersController : Controller
     {
@@ -23,8 +30,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <summary>
         ///     Gets a DO Order by Id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">The identifier of the DO Order.</param>
+        /// <returns>The <see cref="IDOOrder"/>.</returns>
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -37,16 +44,15 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
                 return BadRequest();
             }
 
-            //TODO
-            
-            return NotFound();
+            // TODO
+            return await Task.FromResult(NotFound());
         }
 
         /// <summary>
         ///     Creates a new DO Order.
         /// </summary>
-        /// <param name="createOrderCommand"></param>
-        /// <returns></returns>
+        /// <param name="createOrderCommand">The command to create order.</param>
+        /// <returns>The result of the create action.</returns>
         /// <remarks>Publishes an <see cref="IDOOrderCreatedEvent"/> on successful creation.</remarks>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -54,7 +60,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         public async Task<ActionResult> CreateAsync([FromBody] CreateOrderCommand createOrderCommand)
         {
             var commandResult = await Mediator.Send(createOrderCommand);
-            
+
             if (commandResult < 0)
             {
                 var errorResult = CheckProblems();
@@ -68,7 +74,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
 
             await Mediator.Publish(new DOOrderCreatedEvent(createOrderCommand.DOOrder));
 
-            return CreatedAtAction(Url.Action(nameof(GetAsync)), new {id = createOrderCommand.DOOrder.Id},
+            return CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = createOrderCommand.DOOrder.Id },
                 createOrderCommand.DOOrder);
         }
     }

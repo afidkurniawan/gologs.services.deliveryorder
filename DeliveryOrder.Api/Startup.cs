@@ -1,3 +1,9 @@
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System;
 using System.Linq;
 using System.Net;
@@ -23,10 +29,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
 {
     public class Startup
     {
-        private AssemblyName AssemblyName { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        public IConfiguration Configuration { get; }
+        private ServiceOptions _rabbitMqOptions;
 
         public Startup(IConfiguration configuration)
         {
@@ -34,10 +37,76 @@ namespace GoLogs.Services.DeliveryOrder.Api
             Configuration = configuration;
         }
 
-        #region RabbitMq
-        
-        private ServiceOptions _rabbitMqOptions;
-        
+        // ReSharper disable once MemberCanBePrivate.Global
+        public IConfiguration Configuration { get; }
+
+        private AssemblyName AssemblyName { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services
+                .AddControllers()
+                .AddFluentValidation();
+
+            services.AddMediatR(typeof(Startup));
+
+            services.AddMassTransit(mt =>
+            {
+                mt.UsingRabbitMq(ConfigureRabbitMq);
+            });
+
+            services
+                .AddScoped<IProblemCollector, ProblemCollector>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc(
+                    "v1",
+                    new OpenApiInfo
+                    {
+                        Title = AssemblyName.Name,
+                        Version = "v1"
+                    });
+
+                var filePath = System.IO.Path.Combine(
+                    AppContext.BaseDirectory,
+                    String.Concat(AssemblyName.Name, ".xml"));
+                c.IncludeXmlComments(filePath);
+                c.AddFluentValidationRules();
+            });
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+
+                // Enable middleware to serve generated Swagger as a JSON endpoint.
+                app.UseSwagger();
+
+                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+                // specifying the Swagger JSON endpoint.
+                app.UseSwaggerUI(c =>
+                {
+                    c.SwaggerEndpoint(
+                        "swagger/v1/swagger.json",
+                        String.Concat(AssemblyName.Name, " v1"));
+                    c.RoutePrefix = String.Empty;
+                });
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+        }
+
         private X509Certificate CertificateSelectionCallback(
             object sender, string targetHost, X509CertificateCollection localCertificates,
             X509Certificate remoteCertificate, string[] acceptableIssuers)
@@ -50,7 +119,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
 
         private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
         {
-            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.SERVICE_DEPENDENCIES)
+            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.ServiceDependencies)
                 .Get<ServiceOptions[]>()
                 .First(svc => svc.Name.Equals("RabbitMQ"));
 
@@ -90,73 +159,6 @@ namespace GoLogs.Services.DeliveryOrder.Api
             });
 
             rabbitMqCfg.ConfigureEndpoints(context);
-        }
-        
-        #endregion
-        
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            services
-                .AddControllers()
-                .AddFluentValidation();
-
-            services.AddMediatR(typeof(Startup));
-
-            services.AddMassTransit(mt =>
-            {
-                mt.UsingRabbitMq(ConfigureRabbitMq);
-            });
-
-            services
-                .AddScoped<IProblemCollector, ProblemCollector>();
-            
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1",
-                    new OpenApiInfo
-                    {
-                        Title = AssemblyName.Name,
-                        Version = "v1"
-                    }
-                );
-
-                var filePath = System.IO.Path.Combine(
-                    AppContext.BaseDirectory,
-                    String.Concat(AssemblyName.Name, ".xml"));
-                c.IncludeXmlComments(filePath);
-                c.AddFluentValidationRules();
-            });
-        }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-
-                // Enable middleware to serve generated Swagger as a JSON endpoint.
-                app.UseSwagger();
-
-                // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
-                // specifying the Swagger JSON endpoint.
-                app.UseSwaggerUI(c =>
-                {
-                    c.SwaggerEndpoint(
-                        "swagger/v1/swagger.json",
-                        String.Concat(AssemblyName.Name, " v1"));
-                    c.RoutePrefix = String.Empty;
-                });
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
