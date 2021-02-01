@@ -57,7 +57,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             return errorResult ?? Ok(response);
         }        
         /// <summary>
-        /// Get List of DOOrder with paging and associated with the specified Cargo Owner Id
+        /// Get List of DOOrder with paging and associated with the specified Cargo Owner Id (optional)
         /// </summary>
         /// <param name="cargoOwnerId"></param>          
         /// <param name="page"></param>                                
