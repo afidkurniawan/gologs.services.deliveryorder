@@ -10,7 +10,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
 {
     public class Request : IRequest<IList<DOOrder>>
     {
-        public Request() { }
+        public Request() { 
+        }
         public Request(int cargoOwnerId, int page, int pageSize)
         {
             CargoOwnerId = cargoOwnerId;
@@ -24,11 +25,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
         /// PageSize : the number of rows of DOOrder data on each page that you want to display
         /// </summary>
         [BindProperty(Name = "cargoOwnerId")]
-        public int CargoOwnerId { get; init; }
+        public int CargoOwnerId { get; }
         [BindProperty(Name = "page")]
-        public int Page { get; init; }
+        public int Page { get; }
         [BindProperty(Name = "pageSize")]
-        public int PageSize { get; init; }
+        public int PageSize { get; }
 
     }
 }

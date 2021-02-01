@@ -29,13 +29,14 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <returns><strong> A Row data of DOOrder </strong>></returns>        
         [HttpGet]
         [Route("{id:int}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DOOrder),StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IDOOrder>> GetAsync(int id)
         {            
             var errorResult = CheckProblems();
-            var response = await Mediator.Send(new Queries.GetById.Request(id));            
+            var response = await Mediator.Send(new Queries.GetById.Request(id));
+            if (response == null) return NotFound();
             return errorResult ?? Ok(response);
         }
         /// <summary>
@@ -45,49 +46,43 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <returns><strong> A Row data of DOOrder </strong>></returns>        
         [HttpGet]
         [Route("{doNumber}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(DOOrder), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<IDOOrder>> GetAsync(string doNumber)
         {
             var errorResult = CheckProblems();
-            var response = await Mediator.Send(new Queries.GetByNumber.Request(doNumber));            
+            var response = await Mediator.Send(new Queries.GetByNumber.Request(doNumber));
+            if (response == null) return NotFound();
             return errorResult ?? Ok(response);
-        }
-        /// <summary>
-        /// Get List of DOOrder with paging
-        /// </summary>
-        /// <param name="request"></param>        
-        /// <returns><strong>List of DOOrder</strong>></returns>        
-        [HttpGet]
-        [Route("DOOrders/")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IList<IDOOrder>>> GetAsync([FromQuery] Queries.GetList.Request request)
-        {
-            var errorResult = CheckProblems();
-            if (request.Page < 0 || request.PageSize < 0) return BadRequest();
-            var response = await Mediator.Send(new Queries.GetList.Request(request.Page, request.PageSize));            
-            return errorResult ?? Ok(response);
-        }
+        }        
         /// <summary>
         /// Get List of DOOrder with paging and associated with the specified Cargo Owner Id
         /// </summary>
-        /// <param name="request"></param>        
+        /// <param name="cargoOwnerId"></param>          
+        /// <param name="page"></param>                                
+        /// <param name="pageSize"></param>                               
         /// <returns><strong>List of DOOrder</strong>></returns>  
-        [HttpPost]
-        [Route("DOOrders/")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [HttpGet]
+        [ProducesResponseType(typeof(IList<DOOrder>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<IList<IDOOrder>>> GetAsync([FromQuery] Queries.GetListByCargoOwnerId.Request request)
-        {            
+        public async Task<ActionResult<IList<IDOOrder>>> GetAsync([FromQuery] int? cargoOwnerId,[FromQuery] int page, [FromQuery] int pageSize)
+        {
             var errorResult = CheckProblems();
-            if (request.CargoOwnerId < 0 || request.Page < 0 || request.PageSize < 0) return BadRequest();
-            var response = await Mediator.Send(request);            
+            IList<DOOrder> response;
+            if (page < 0 || pageSize < 0) return BadRequest();
+            if (cargoOwnerId != null)
+            {
+                response = await Mediator.Send(new Queries.GetListByCargoOwnerId.Request((int)cargoOwnerId, page, pageSize));
+            }
+            else
+            {
+                response = await Mediator.Send(new Queries.GetList.Request(page, pageSize));
+            }
+            if (response.Count == 0) return NotFound();
             return errorResult ?? Ok(response);
-        }     
+        }
         /// <summary>
         /// Create DOOrder data, parameter that send only CargoOwnerId And Publish DOOrderCreatedEvent to Rabbit MQ
         /// </summary>

@@ -10,8 +10,7 @@ using System.Threading.Tasks;
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
     public class Request : IRequest<IList<DOOrder>>
-    {
-        public Request() { }
+    {        
         public Request(int page, int pageSize)
         {
             Page = page;
@@ -25,10 +24,10 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 
         //[Range(0, Int32.MaxValue, ErrorMessage = "Enter page greater than 0 ")]
         [BindProperty(Name = "page")]
-        public int Page { get; init; }
+        public int Page { get; }
         //[Range(0, Int32.MaxValue, ErrorMessage = "Enter pageSize greater than 0 ")]
         [BindProperty(Name = "PageSize")]
-        public int PageSize { get; init; }
+        public int PageSize { get; }
 
 
     }

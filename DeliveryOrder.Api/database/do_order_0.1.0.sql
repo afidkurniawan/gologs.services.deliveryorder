@@ -24,11 +24,11 @@ CREATE TABLE public.do_order
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     rowstatus smallint NOT NULL DEFAULT 0,
     cargo_owner_id integer NOT NULL,
-    do_order_number character varying(24) COLLATE pg_catalog."default" NOT NULL,
-    created timestamp without time zone NOT NULL,
-    creator character varying(64) COLLATE pg_catalog."default" NOT NULL,
-    modified timestamp without time zone,
-    modifier character varying(64) COLLATE pg_catalog."default",
+    do_order_number varchar(24) COLLATE pg_catalog."default" NOT NULL,
+    created timestamp NOT NULL,
+    creator varchar(64) COLLATE pg_catalog."default" NOT NULL,
+    modified timestamp,
+    modifier varchar(64) COLLATE pg_catalog."default",
     CONSTRAINT do_order_id_pk PRIMARY KEY (id)
 )
 
@@ -49,9 +49,9 @@ CREATE UNIQUE INDEX do_order_do_order_number_key
 --DROP TABLE public.schema_migration;
 CREATE TABLE public.schema_migration (
     id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-    version_major int2 NOT NULL,
-    version_minor int2 NOT NULL,
-    version_patch int2 NOT NULL,
+    version_major integer NOT NULL,
+    version_minor integer NOT NULL,
+    version_patch integer NOT NULL,
     db_version varchar(17) GENERATED ALWAYS AS (CAST(version_major AS varchar(5)) || '.' || CAST(version_minor AS varchar(5)) || '.' || CAST(version_patch AS varchar(5))) STORED,
     app_version varchar NOT NULL,
     up_script text NOT NULL,
@@ -97,11 +97,11 @@ CREATE TABLE public.do_order
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
     rowstatus smallint NOT NULL DEFAULT 0,
     cargo_owner_id integer NOT NULL,
-    do_order_number character varying(24) COLLATE pg_catalog."default" NOT NULL,
-    created timestamp without time zone NOT NULL,
-    creator character varying(64) COLLATE pg_catalog."default" NOT NULL,
-    modified timestamp without time zone,
-    modifier character varying(64) COLLATE pg_catalog."default",
+    do_order_number varchar(24) COLLATE pg_catalog."default" NOT NULL,
+    created timestamp NOT NULL,
+    creator varchar(64) COLLATE pg_catalog."default" NOT NULL,
+    modified timestamp,
+    modifier varchar(64) COLLATE pg_catalog."default",
     CONSTRAINT do_order_id_pk PRIMARY KEY (id)
 )
 
@@ -122,9 +122,9 @@ CREATE UNIQUE INDEX do_order_do_order_number_key
 --DROP TABLE public.schema_migration;
 CREATE TABLE public.schema_migration (
     id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-    version_major int2 NOT NULL,
-    version_minor int2 NOT NULL,
-    version_patch int2 NOT NULL,
+    version_major integer NOT NULL,
+    version_minor integer NOT NULL,
+    version_patch integer NOT NULL,
     db_version varchar(17) GENERATED ALWAYS AS (CAST(version_major AS varchar(5)) || ''.'' || CAST(version_minor AS varchar(5)) ||''.'' || CAST(version_patch AS varchar(5))) STORED,
     app_version varchar NOT NULL,
     up_script text NOT NULL,
