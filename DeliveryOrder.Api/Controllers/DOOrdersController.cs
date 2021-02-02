@@ -1,10 +1,14 @@
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
 using GoLogs.Services.DeliveryOrder.Api.Models;
-using Queries = GoLogs.Services.DeliveryOrder.Api.Queries;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +18,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+
     // ReSharper disable once InconsistentNaming
     public class DOOrdersController : Controller
     {
@@ -25,8 +30,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <summary>        
         /// Get DOOrder associated with the specified ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns><strong> A Row data of DOOrder </strong>></returns>        
+        /// <param name="id">The identifier of the DO Order.</param>
+        /// <returns>The <see cref="IDOOrder"/>.</returns>
         [HttpGet]
         [Route("{id:int}")]
         [ProducesResponseType(typeof(DOOrder),StatusCodes.Status200OK)]
@@ -42,8 +47,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         /// <summary>
         /// Get DOOrder associated with the specified DO Order Number
         /// </summary>
-        /// <param name="doNumber"></param>        
-        /// <returns><strong> A Row data of DOOrder </strong>></returns>        
+        /// <param name="doNumber">The identifier of the DO Order.</param>        
+        /// <returns>The <see cref="IDOOrder"/>.</returns>      
         [HttpGet]
         [Route("{doNumber}")]
         [ProducesResponseType(typeof(DOOrder), StatusCodes.Status200OK)]
@@ -55,14 +60,14 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             var response = await Mediator.Send(new Queries.GetByNumber.Request(doNumber));
             if (response == null) return NotFound();
             return errorResult ?? Ok(response);
-        }        
+        }
         /// <summary>
         /// Get List of DOOrder with paging and associated with the specified Cargo Owner Id (optional)
         /// </summary>
         /// <param name="cargoOwnerId"></param>          
         /// <param name="page"></param>                                
         /// <param name="pageSize"></param>                               
-        /// <returns><strong>List of DOOrder</strong>></returns>  
+        /// <returns>The <see cref="IDOOrder"/>.</returns> 
         [HttpGet]
         [ProducesResponseType(typeof(IList<DOOrder>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -81,13 +86,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
                 response = await Mediator.Send(new Queries.GetList.Request(page, pageSize));
             }
             if (response.Count == 0) return NotFound();
-            return errorResult ?? Ok(response);
+            return errorResult ?? Ok(response);                        
         }
         /// <summary>
         /// Create DOOrder data, parameter that send only CargoOwnerId And Publish DOOrderCreatedEvent to Rabbit MQ
         /// </summary>
         /// <param name="doOrderInput"></param>
-        /// <returns>A row the data you just created</returns>
+        /// <returns>The <see cref="IDOOrder"/>.</returns> 
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -96,8 +101,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             var doOrder = Mapper.Map<DOOrder>(doOrderInput);
             var errorResult = CheckProblems();            
             await Mediator.Send(doOrder);       
-            await PublishEndpoint.Publish<IDOOrder>(new { DODoOrderNumber = doOrder.DOOrderNumber, CargoOwnerId = doOrder.CargoOwnerId});             
+            await PublishEndpoint.Publish<IDOOrder>(new { doOrder.DOOrderNumber, doOrder.CargoOwnerId});             
             return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = doOrder.Id }, doOrder);             
+
         }
     }
 }

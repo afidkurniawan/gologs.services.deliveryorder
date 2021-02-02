@@ -1,3 +1,9 @@
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Threading;
 using System.Threading.Tasks;
 using GoLogs.Events;
@@ -22,7 +28,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Infrastructure.Messaging
         {
             Check.NotNull(doOrderCreatedEvent, nameof(doOrderCreatedEvent));
 
-            await _publishEndpoint.Publish<IDOOrderCreatedEvent>(new {DOOrder = doOrderCreatedEvent.DOOrder},
+            await _publishEndpoint.Publish<IDOOrderCreatedEvent>(
+                new { DOOrder = doOrderCreatedEvent.DOOrder },
                 cancellationToken);
         }
     }

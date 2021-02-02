@@ -1,3 +1,9 @@
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -18,7 +24,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 
         public CreateOrderCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
         {
-            _context = context;            
+            _context = context;
             _problemCollector = problemCollector;
         }
         /// <summary>
@@ -37,15 +43,15 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions, TransactionScopeAsyncFlowOption.Enabled))
             {
                 Check.NotNull(createOrderCommand, nameof(createOrderCommand));
-                var lastdata = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"));
-                int lastid = lastdata.Id;// 0;// lastdata[0].Id;
+                var lastdata = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"), cancellationToken);
+                var lastid = lastdata.Id;// 0;// lastdata[0].Id;
                 lastid += 1;
-                var DOOrderNumber = "DO" + lastid;
-                createOrderCommand.DOOrderNumber = DOOrderNumber;
-                await _context.DOOrders.InsertAsync(createOrderCommand);
+                var dOOrderNumber = "DO" + lastid;
+                createOrderCommand.DOOrderNumber = dOOrderNumber;
+                await _context.DOOrders.InsertAsync(createOrderCommand, cancellationToken);
                 scope.Complete();
                 scope.Dispose();
-            }           
+            }
             return await Task.FromResult(1);
         }
     }

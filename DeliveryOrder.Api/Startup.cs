@@ -1,3 +1,9 @@
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -29,10 +35,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
 {
     public class Startup
     {
-        private AssemblyName AssemblyName { get; }
-
-        // ReSharper disable once MemberCanBePrivate.Global
-        public IConfiguration Configuration { get; }
+        private ServiceOptions _rabbitMqOptions;
 
         public Startup(IConfiguration configuration)
         {
@@ -40,66 +43,11 @@ namespace GoLogs.Services.DeliveryOrder.Api
             Configuration = configuration;
         }
 
-        #region RabbitMq
-        
-        private ServiceOptions _rabbitMqOptions;
-        
-        private X509Certificate CertificateSelectionCallback(
-            object sender, string targetHost, X509CertificateCollection localCertificates,
-            X509Certificate remoteCertificate, string[] acceptableIssuers)
-        {
-            var serverCertificate = localCertificates.OfType<X509Certificate2>()
-                .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint.ToLower());
+        // ReSharper disable once MemberCanBePrivate.Global
+        public IConfiguration Configuration { get; }
 
-            return serverCertificate ?? throw new Exception("Wrong certificate");
-        }
+        private AssemblyName AssemblyName { get; }
 
-        private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
-        {
-            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.SERVICE_DEPENDENCIES)
-                .Get<ServiceOptions[]>()
-                .First(svc => svc.Name.Equals("RabbitMQ"));
-
-            X509Certificate2 x509Certificate2 = null;
-
-            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-            store.Open(OpenFlags.ReadOnly);
-
-            try
-            {
-                var certificatesInStore = store.Certificates;
-
-                x509Certificate2 = certificatesInStore.OfType<X509Certificate2>()
-                    .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint?.ToLower());
-            }
-            finally
-            {
-                store.Close();
-            }
-
-            rabbitMqCfg.Host(_rabbitMqOptions.Host, _rabbitMqOptions.VirtualHost, h =>
-            {
-                h.Username(_rabbitMqOptions.Username);
-                h.Password(_rabbitMqOptions.Password);
-
-                if (_rabbitMqOptions.UseSsl)
-                {
-                    h.UseSsl(ssl =>
-                    {
-                        ssl.ServerName = Dns.GetHostName();
-                        ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch);
-                        ssl.Certificate = x509Certificate2;
-                        ssl.Protocol = SslProtocols.Tls12;
-                        ssl.CertificateSelectionCallback = CertificateSelectionCallback;
-                    });
-                }
-            });
-
-            rabbitMqCfg.ConfigureEndpoints(context);
-        }
-        
-        #endregion
-        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -151,15 +99,16 @@ namespace GoLogs.Services.DeliveryOrder.Api
                 .AddFluentValidators()
                 .AddAutoMapper(typeof(Startup));
 
+
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1",
+                c.SwaggerDoc(
+                    "v1",
                     new OpenApiInfo
                     {
                         Title = AssemblyName.Name,
                         Version = "v1"
-                    }
-                );
+                    });
 
                 var filePath = System.IO.Path.Combine(
                     AppContext.BaseDirectory,
@@ -195,6 +144,60 @@ namespace GoLogs.Services.DeliveryOrder.Api
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private X509Certificate CertificateSelectionCallback(
+            object sender, string targetHost, X509CertificateCollection localCertificates,
+            X509Certificate remoteCertificate, string[] acceptableIssuers)
+        {
+            var serverCertificate = localCertificates.OfType<X509Certificate2>()
+                .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint.ToLower());
+
+            return serverCertificate ?? throw new Exception("Wrong certificate");
+        }
+
+        private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
+        {
+            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.SERVICE_DEPENDENCIES)
+                .Get<ServiceOptions[]>()
+                .First(svc => svc.Name.Equals("RabbitMQ", StringComparison.Ordinal));
+
+            X509Certificate2 x509Certificate2 = null;
+
+            var store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+            store.Open(OpenFlags.ReadOnly);
+
+            try
+            {
+                var certificatesInStore = store.Certificates;
+
+                x509Certificate2 = certificatesInStore.OfType<X509Certificate2>()
+                    .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint?.ToLower());
+            }
+            finally
+            {
+                store.Close();
+            }
+
+            rabbitMqCfg.Host(_rabbitMqOptions.Host, _rabbitMqOptions.VirtualHost, h =>
+            {
+                h.Username(_rabbitMqOptions.Username);
+                h.Password(_rabbitMqOptions.Password);
+
+                if (_rabbitMqOptions.UseSsl)
+                {
+                    h.UseSsl(ssl =>
+                    {
+                        ssl.ServerName = Dns.GetHostName();
+                        ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch);
+                        ssl.Certificate = x509Certificate2;
+                        ssl.Protocol = SslProtocols.Tls12;
+                        ssl.CertificateSelectionCallback = CertificateSelectionCallback;
+                    });
+                }
+            });
+
+            rabbitMqCfg.ConfigureEndpoints(context);
         }
     }
 }
