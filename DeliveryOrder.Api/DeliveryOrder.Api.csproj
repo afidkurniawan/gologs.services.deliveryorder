@@ -24,6 +24,10 @@
       <DocumentationFile>bin\Debug\DeliveryOrder.Api.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
     <ItemGroup>
       <Compile Remove="Commands\CreateOrderRCommandHandler.cs" />
     </ItemGroup>

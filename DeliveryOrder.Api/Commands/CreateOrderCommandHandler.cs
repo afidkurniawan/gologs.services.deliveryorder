@@ -13,7 +13,6 @@ using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 using Nirbito.Framework.Core;
 using SqlKata;
-using System;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {

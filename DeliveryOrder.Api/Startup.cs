@@ -191,7 +191,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
                         ssl.ServerName = Dns.GetHostName();
                         ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch);
                         ssl.Certificate = x509Certificate2;
-                        ssl.Protocol = SslProtocols.Tls12;
+                        ssl.Protocol = SslProtocols.None;
                         ssl.CertificateSelectionCallback = CertificateSelectionCallback;
                     });
                 }
