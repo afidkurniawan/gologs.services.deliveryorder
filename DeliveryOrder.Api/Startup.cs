@@ -30,6 +30,7 @@ using Nirbito.Framework.PostgresClient.ManagedColumns;
 using Swashbuckle.AspNetCore.Swagger;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using MediatR;
+using System.Globalization;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
@@ -151,9 +152,9 @@ namespace GoLogs.Services.DeliveryOrder.Api
             X509Certificate remoteCertificate, string[] acceptableIssuers)
         {
             var serverCertificate = localCertificates.OfType<X509Certificate2>()
-                .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint.ToLower());
+                .FirstOrDefault(cert => cert.Thumbprint?.ToUpper(CultureInfo.InvariantCulture) == _rabbitMqOptions.SslThumbprint.ToUpper(CultureInfo.InvariantCulture));
 
-            return serverCertificate ?? throw new Exception("Wrong certificate");
+            return serverCertificate ?? throw new AuthenticationException("Wrong certificate");
         }
 
         private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
@@ -172,7 +173,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
                 var certificatesInStore = store.Certificates;
 
                 x509Certificate2 = certificatesInStore.OfType<X509Certificate2>()
-                    .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint?.ToLower());
+                    .FirstOrDefault(cert => cert.Thumbprint?.ToUpper(CultureInfo.InvariantCulture) == _rabbitMqOptions.SslThumbprint?.ToUpper(CultureInfo.InvariantCulture));
             }
             finally
             {
