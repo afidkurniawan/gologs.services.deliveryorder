@@ -1,10 +1,11 @@
-﻿
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
@@ -16,9 +17,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
         }
 
         /// <summary>
-        /// <c>Get DOOrder </c>associated with the specified ID (int)
+        /// <c>GetAsync DOOrder </c>associated with the specified ID (int).
         /// </summary>
         public int Id { get; }
-
     }
 }

@@ -1,7 +1,12 @@
-﻿using System.Collections.Generic;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using GoLogs.Framework.Mvc;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
@@ -13,23 +18,22 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
         private readonly DOOrderContext _context;
-        private readonly IProblemCollector _problemCollector;
-        public Handler(DOOrderContext context, IProblemCollector problemCollector)
+
+        public Handler(DOOrderContext context)
         {
             _context = context;
-            _problemCollector = problemCollector;
         }
+
         /// <summary>
-        /// Handle to get an DOOrder associated with the specified CargoOwnerId
+        /// Handle to get an List of DOOrders with the specified CargoOwnerId.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>List of DOOrders</returns>
+        /// <param name="request">Specified CargoOwnerId.</param>
+        /// <param name="cancellationToken">Specified cancelation token.</param>
+        /// <returns>list of <see cref="DOOrder"/>.</returns>
         public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
-            return await _context.DOOrders.AllAsync(new Query().Where(nameof(DOOrder.CargoOwnerId),request.CargoOwnerId), cancellationToken);
+            return await _context.DOOrders.AllAsync(new Query().Where(nameof(DOOrder.CargoOwnerId), request.CargoOwnerId), cancellationToken);
         }
-        
     }
 }

@@ -1,34 +1,31 @@
-﻿using GoLogs.Services.DeliveryOrder.Api.Models;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
+using GoLogs.Services.DeliveryOrder.Api.Models;
+using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
     public class Request : IRequest<IList<DOOrder>>
-    {        
+    {
         public Request(int page, int pageSize)
         {
             Page = page;
             PageSize = pageSize;
         }
+
         /// <summary>
-        /// Get List of DOOrder with paging
-        /// Page : the page number of DOOrder data you want to display
-        /// PageSize : the number of rows of DOOrder data on each page that you want to display
+        /// <c>GetAsync DOOrders </c>associated with the specified Page (int).
         /// </summary>
-
-        //[Range(0, Int32.MaxValue, ErrorMessage = "Enter page greater than 0 ")]
-        [BindProperty(Name = "page")]
         public int Page { get; }
-        //[Range(0, Int32.MaxValue, ErrorMessage = "Enter pageSize greater than 0 ")]
-        [BindProperty(Name = "PageSize")]
+
+        /// <summary>
+        /// <c>GetAsync DOOrders </c>associated with the specified PageSize (int).
+        /// </summary>
         public int PageSize { get; }
-
-
     }
 }

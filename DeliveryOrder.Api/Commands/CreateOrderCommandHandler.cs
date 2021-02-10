@@ -26,12 +26,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             _context = context;
             _problemCollector = problemCollector;
         }
+
         /// <summary>
-        /// Handle for Create DOOrder Number
+        /// Handle to get Create DOOrderNumber.
         /// </summary>
-        /// <param name="createOrderCommand"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
+        /// <param name="createOrderCommand">Specified CargoOwnerID.</param>
+        /// <param name="cancellationToken">Specifiedcancelation token.</param>
+        /// <returns>integer.</returns>
         public async Task<int> Handle(DOOrder createOrderCommand, CancellationToken cancellationToken = default)
         {
             var transactionOptions = new TransactionOptions
@@ -43,7 +44,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             {
                 Check.NotNull(createOrderCommand, nameof(createOrderCommand));
                 var lastdata = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"), cancellationToken);
-                var lastid = lastdata.Id;// 0;// lastdata[0].Id;
+                var lastid = lastdata.Id;
                 lastid += 1;
                 var dOOrderNumber = "DO" + lastid;
                 createOrderCommand.DOOrderNumber = dOOrderNumber;
@@ -51,6 +52,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
                 scope.Complete();
                 scope.Dispose();
             }
+
             return await Task.FromResult(1);
         }
     }

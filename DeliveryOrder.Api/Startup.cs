@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
@@ -16,8 +17,10 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using GoLogs.Framework.Core.Options;
 using GoLogs.Framework.Mvc;
+using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -28,9 +31,6 @@ using Nirbito.Framework.PostgresClient;
 using Nirbito.Framework.PostgresClient.DependencyInjectionExtensions;
 using Nirbito.Framework.PostgresClient.ManagedColumns;
 using Swashbuckle.AspNetCore.Swagger;
-using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
-using MediatR;
-using System.Globalization;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
@@ -66,28 +66,24 @@ namespace GoLogs.Services.DeliveryOrder.Api
                     {
                         new DefaultColumn<DateTime?>(
                             "created", (insert, update) =>
-                                insert ? (DateTime?) DateTime.Now : null),
+                                insert ? (DateTime?)DateTime.Now : null),
                         new DefaultColumn<string>(
                             "creator", (insert, update) =>
                                 insert ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
                         new DefaultColumn<DateTime?>(
                             "modified", (insert, update) =>
-                                update ? (DateTime?) DateTime.Now : null),
+                                update ? (DateTime?)DateTime.Now : null),
                         new DefaultColumn<string>(
                             "modifier", (insert, update) =>
                                 update ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
                     });
 
-
-            services                
+            services
                 .AddPgContext<DOOrderContext>(options => options
                     .UseConnectionString(Configuration.GetConnectionString("DO_Order"))
                     .UseSoftDeleteColumn(new SoftDeleteColumn<int>(
                         "rowstatus", delete => delete ? 1 : 0))
                     .UseNamingConvention(NamingConvention.SnakeCase));
-
-
-
 
             services.AddMassTransit(mt =>
             {
@@ -96,10 +92,8 @@ namespace GoLogs.Services.DeliveryOrder.Api
 
             services
                 .AddScoped<IProblemCollector, ProblemCollector>()
-                //.AddScoped<IDOOrderLogic, DOOrderLogic>()
                 .AddFluentValidators()
                 .AddAutoMapper(typeof(Startup));
-
 
             services.AddSwaggerGen(c =>
             {
@@ -159,7 +153,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
 
         private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
         {
-            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.SERVICE_DEPENDENCIES)
+            _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.ServiceDependencies)
                 .Get<ServiceOptions[]>()
                 .First(svc => svc.Name.Equals("RabbitMQ", StringComparison.Ordinal));
 

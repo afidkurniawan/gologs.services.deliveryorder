@@ -1,17 +1,19 @@
-﻿using GoLogs.Services.DeliveryOrder.Api.Models;
-using System;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GoLogs.Services.DeliveryOrder.Api.Models;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
     public class Response
     {
         /// <summary>
-        /// Responses for DOOrdersController GetAsync with paging
+        /// <c>GetAsync DOOrders </c> DOOrders.
         /// </summary>
-        public IList<DOOrder> DoOrders{ get; set; }
-
-}
+        public IList<DOOrder> DoOrders { get; set; }
+    }
 }

@@ -1,4 +1,10 @@
-﻿using System.Threading;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
+using System.Threading;
 using System.Threading.Tasks;
 using GoLogs.Framework.Mvc;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
@@ -13,22 +19,23 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
     {
         private readonly DOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
+
         public Handler(DOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
             _problemCollector = problemCollector;
         }
+
         /// <summary>
-        /// Handle to get an DOOrder associated with the specified Id
+        /// Handle to get an DOOrder with the specified Id.
         /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns>DOOrder</returns>
+        /// <param name="request">Specified Id.</param>
+        /// <param name="cancellationToken">Specifiedcancelation token.</param>
+        /// <returns><see cref="DOOrder"/>.</returns>
         public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken)
         {
             Check.NotNull(request, nameof(request));
             return await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.Id), request.Id), cancellationToken);
         }
-        
     }
 }

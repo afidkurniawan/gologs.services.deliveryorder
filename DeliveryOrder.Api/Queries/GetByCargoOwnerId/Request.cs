@@ -1,9 +1,12 @@
-﻿using GoLogs.Services.DeliveryOrder.Api.Models;
-using MediatR;
-using System;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GoLogs.Services.DeliveryOrder.Api.Models;
+using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
 {
@@ -15,11 +18,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
         }
 
         /// <summary>
-        /// Get List of DOOrder associated with the specified Cargo Owner Id and paging
-        /// Page : the page number of DOOrder data you want to display
-        /// PageSize : the number of rows of DOOrder data on each page that you want to display
+        /// <c>GetAsync DOOrder </c>associated with the specified CargoOwnerId (int).
         /// </summary>
-        public int CargoOwnerId { get; }        
-
+        public int CargoOwnerId { get; }
     }
 }

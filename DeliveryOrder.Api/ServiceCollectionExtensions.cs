@@ -1,3 +1,9 @@
+// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
 using FluentValidation;
 using GoLogs.Services.DeliveryOrder.Api.Application.Validators;
 using GoLogs.Services.DeliveryOrder.Api.Models;
@@ -15,7 +21,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
         public static IServiceCollection AddFluentValidators(this IServiceCollection services)
         {
             return services
-                .AddTransient<IValidator<DOOrderDto>, DOOrderValidator>();                
+                .AddTransient<IValidator<DOOrderDto>, DOOrderValidator>();
         }
     }
 }

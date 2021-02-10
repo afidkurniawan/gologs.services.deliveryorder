@@ -11,14 +11,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {
     public class CreateOrderCommand : IRequest<int>
     {
-        //public DOOrder dorequest { get; }
-        private ICreateDOOrder DoOrder { get; }
-
-        public CreateOrderCommand() { }
-
         public CreateOrderCommand(ICreateDOOrder doOrder)
         {
             DoOrder = doOrder;
         }
+
+        public CreateOrderCommand() { }
+
+        private ICreateDOOrder DoOrder { get; }
     }
 }

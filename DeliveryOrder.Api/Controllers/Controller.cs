@@ -13,25 +13,29 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
 {
     public class Controller : ControllerBase
     {
+        private readonly IProblemCollector _problemCollector;
+        private readonly IMapper _mapper;
+        private readonly IPublishEndpoint _publishEndpoint;
+        private readonly IMediator _mediator;
 
-        private readonly IProblemCollector ProblemCollector;        
-        protected readonly IMapper Mapper;
-        protected readonly IPublishEndpoint PublishEndpoint;
-        protected readonly IMediator Mediator;
-        public Controller(IProblemCollector problemCollector,
+        public Controller(
+            IProblemCollector problemCollector,
             IMapper mapper, IPublishEndpoint publishEndpoint, IMediator mediator)
         {
-            ProblemCollector = problemCollector;
-            Mapper = mapper;
-            PublishEndpoint = publishEndpoint;
-            Mediator = mediator;
+            _problemCollector = problemCollector;
+            _mapper = mapper;
+            _publishEndpoint = publishEndpoint;
+            _mediator = mediator;
         }
+
         protected ObjectResult CheckProblems()
         {
-            if (!ProblemCollector.HasProblems)
+            if (!_problemCollector.HasProblems)
+            {
                 return null;
+            }
 
-            var problem = ProblemCollector.GetProblems();
+            var problem = _problemCollector.GetProblems();
             return StatusCode(problem.Status.GetValueOrDefault(), problem);
         }
     }

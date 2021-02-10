@@ -1,17 +1,18 @@
-﻿using GoLogs.Services.DeliveryOrder.Api.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
+using GoLogs.Services.DeliveryOrder.Api.Models;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
     public class Response
     {
         /// <summary>
-        /// Responses for DOOrdersController GetAsync by Id
+        /// <c>GetAsync DOOrder </c> DOOrder.
         /// </summary>
-        public DOOrder DoOrder{ get; set; }
-
-}
+        public DOOrder DoOrder { get; set; }
+    }
 }

@@ -1,9 +1,11 @@
-﻿using GoLogs.Services.DeliveryOrder.Api.Models;
+﻿// -------------------------------------------------------------
+// Copyright Go-Logs. All rights reserved.
+// Proprietary and confidential.
+// Unauthorized copying of this file is strictly prohibited.
+// -------------------------------------------------------------
+
+using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
 {
@@ -15,9 +17,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
         }
 
         /// <summary>
-        /// Get DOOrder associated with the specified DO Order Number (string)
+        /// <c>GetAsync DOOrder </c>associated with the specified DOOrderNumber (string).
         /// </summary>
         public string DoNumber { get; }
-
     }
 }
