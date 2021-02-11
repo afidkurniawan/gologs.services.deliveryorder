@@ -3,21 +3,22 @@
 // Proprietary and confidential.
 // Unauthorized copying of this file is strictly prohibited.
 // -------------------------------------------------------------
+
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 
-// ReSharper disable InconsistentNaming
-namespace GoLogs.Services.DeliveryOrder.Api.Commands
+namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
 {
-    public class CreateOrderCommand : IRequest<int>
+    public class Request : IRequest<DOOrder>
     {
-        public CreateOrderCommand(ICreateDOOrder doOrder)
+        public Request(int id)
         {
-            DoOrder = doOrder;
+            Id = id;
         }
 
-        public CreateOrderCommand() { }
-
-        private ICreateDOOrder DoOrder { get; }
+        /// <summary>
+        /// <c>GetAsync DOOrder </c>associated with the specified ID (int).
+        /// </summary>
+        public int Id { get; }
     }
 }

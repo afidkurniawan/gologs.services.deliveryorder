@@ -1,10 +1,9 @@
 ﻿{
-  "$schema": "http://json.schemastore.org/launchsettings.json",
   "iisSettings": {
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:30243",
+      "applicationUrl": "http://localhost:18534",
       "sslPort": 44376
     }
   },
@@ -16,10 +15,10 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "DeliveryOrder.Api": {
+    "Customer.Api": {
       "commandName": "Project",
       "launchBrowser": true,
-      "applicationUrl": "https://localhost:22911",
+      "applicationUrl": "https://localhost:57058;http://localhost:50022",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }

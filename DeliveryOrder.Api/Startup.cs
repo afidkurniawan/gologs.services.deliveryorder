@@ -5,15 +5,19 @@
 // -------------------------------------------------------------
 
 using System;
+using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Security;
 using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using GoLogs.Framework.Core.Options;
 using GoLogs.Framework.Mvc;
+using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using MassTransit;
 using MassTransit.RabbitMqTransport;
 using MediatR;
@@ -23,6 +27,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Nirbito.Framework.PostgresClient;
+using Nirbito.Framework.PostgresClient.DependencyInjectionExtensions;
+using Nirbito.Framework.PostgresClient.ManagedColumns;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace GoLogs.Services.DeliveryOrder.Api
@@ -45,11 +52,38 @@ namespace GoLogs.Services.DeliveryOrder.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services
-                .AddControllers()
-                .AddFluentValidation();
-
             services.AddMediatR(typeof(Startup));
+            services
+                 .AddHttpContextAccessor()
+                 .AddControllers()
+                 .AddFluentValidation()
+                 .AddNewtonsoftJson();
+            services
+                .AddSingleton<ScopedHttpContext>()
+                .AddOptions<PgContextOptions>()
+                .Configure<ScopedHttpContext>((options, context) => options.DefaultColumns =
+                    new Collection<IDefaultColumn>
+                    {
+                        new DefaultColumn<DateTime?>(
+                            "created", (insert, update) =>
+                                insert ? (DateTime?)DateTime.Now : null),
+                        new DefaultColumn<string>(
+                            "creator", (insert, update) =>
+                                insert ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
+                        new DefaultColumn<DateTime?>(
+                            "modified", (insert, update) =>
+                                update ? (DateTime?)DateTime.Now : null),
+                        new DefaultColumn<string>(
+                            "modifier", (insert, update) =>
+                                update ? context?.Accessor.HttpContext.User.Identity.Name ?? "ANONYMOUS" : null),
+                    });
+
+            services
+                .AddPgContext<DOOrderContext>(options => options
+                    .UseConnectionString(Configuration.GetConnectionString("DO_Order"))
+                    .UseSoftDeleteColumn(new SoftDeleteColumn<int>(
+                        "rowstatus", delete => delete ? 1 : 0))
+                    .UseNamingConvention(NamingConvention.SnakeCase));
 
             services.AddMassTransit(mt =>
             {
@@ -57,7 +91,9 @@ namespace GoLogs.Services.DeliveryOrder.Api
             });
 
             services
-                .AddScoped<IProblemCollector, ProblemCollector>();
+                .AddScoped<IProblemCollector, ProblemCollector>()
+                .AddFluentValidators()
+                .AddAutoMapper(typeof(Startup));
 
             services.AddSwaggerGen(c =>
             {
@@ -104,13 +140,11 @@ namespace GoLogs.Services.DeliveryOrder.Api
                 });
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
         }
 
         private X509Certificate CertificateSelectionCallback(
@@ -118,16 +152,16 @@ namespace GoLogs.Services.DeliveryOrder.Api
             X509Certificate remoteCertificate, string[] acceptableIssuers)
         {
             var serverCertificate = localCertificates.OfType<X509Certificate2>()
-                .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint.ToLower());
+                .FirstOrDefault(cert => cert.Thumbprint?.ToUpper(CultureInfo.InvariantCulture) == _rabbitMqOptions.SslThumbprint.ToUpper(CultureInfo.InvariantCulture));
 
-            return serverCertificate ?? throw new Exception("Wrong certificate");
+            return serverCertificate ?? throw new AuthenticationException("Wrong certificate");
         }
 
         private void ConfigureRabbitMq(IBusRegistrationContext context, IRabbitMqBusFactoryConfigurator rabbitMqCfg)
         {
             _rabbitMqOptions = Configuration.GetSection(ServiceDependenciesOptions.ServiceDependencies)
                 .Get<ServiceOptions[]>()
-                .First(svc => svc.Name.Equals("RabbitMQ"));
+                .First(svc => svc.Name.Equals("RabbitMQ", StringComparison.Ordinal));
 
             X509Certificate2 x509Certificate2 = null;
 
@@ -139,7 +173,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
                 var certificatesInStore = store.Certificates;
 
                 x509Certificate2 = certificatesInStore.OfType<X509Certificate2>()
-                    .FirstOrDefault(cert => cert.Thumbprint?.ToLower() == _rabbitMqOptions.SslThumbprint?.ToLower());
+                    .FirstOrDefault(cert => cert.Thumbprint?.ToUpper(CultureInfo.InvariantCulture) == _rabbitMqOptions.SslThumbprint?.ToUpper(CultureInfo.InvariantCulture));
             }
             finally
             {
@@ -158,7 +192,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
                         ssl.ServerName = Dns.GetHostName();
                         ssl.AllowPolicyErrors(SslPolicyErrors.RemoteCertificateNameMismatch);
                         ssl.Certificate = x509Certificate2;
-                        ssl.Protocol = SslProtocols.Tls12;
+                        ssl.Protocol = SslProtocols.None;
                         ssl.CertificateSelectionCallback = CertificateSelectionCallback;
                     });
                 }

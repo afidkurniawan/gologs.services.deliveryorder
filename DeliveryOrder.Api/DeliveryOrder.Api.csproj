@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net5.0</TargetFramework>
         <RootNamespace>GoLogs.Services.DeliveryOrder.Api</RootNamespace>
         <Authors>IqbalN</Authors>
         <PackageVersion>0.1.0</PackageVersion>
@@ -11,6 +11,8 @@
         <FileVersion>0.1.0</FileVersion>
         <NeutralLanguage>en-US</NeutralLanguage>
         <Description>Go-Logs ordering API for DO online request.</Description>
+        <EnableNETAnalyzers>true</EnableNETAnalyzers>
+        <AnalysisLevel>latest</AnalysisLevel>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
@@ -22,18 +24,29 @@
       <DocumentationFile>bin\Debug\DeliveryOrder.Api.xml</DocumentationFile>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <PlatformTarget>AnyCPU</PlatformTarget>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Compile Remove="Commands\CreateOrderRCommandHandler.cs" />
+    </ItemGroup>
+
     <ItemGroup>
       <PackageReference Include="AutoMapper" Version="10.1.1" />
+      <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
       <PackageReference Include="FluentValidation.AspNetCore" Version="9.3.0" />
-      <PackageReference Include="GoLogs.Framework.Core" Version="0.4.0" />
-      <PackageReference Include="GoLogs.Framework.Mvc" Version="0.1.0" />
+      <PackageReference Include="GoLogs.Framework.Core" Version="0.4.1" />
+      <PackageReference Include="GoLogs.Framework.Mvc" Version="0.2.1" />
       <PackageReference Include="MassTransit" Version="7.0.7" />
       <PackageReference Include="MassTransit.Extensions.DependencyInjection" Version="7.0.7" />
       <PackageReference Include="MassTransit.RabbitMQ" Version="7.0.7" />
       <PackageReference Include="MediatR" Version="9.0.0" />
       <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
       <PackageReference Include="MicroElements.Swashbuckle.FluentValidation" Version="4.0.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.2" />
       <PackageReference Include="Nirbito.Framework.Core" Version="0.1.0" />
+      <PackageReference Include="Nirbito.Framework.PostgresClient" Version="0.1.2" />
       <PackageReference Include="RabbitMQ.Client" Version="6.2.1" />
       <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     </ItemGroup>

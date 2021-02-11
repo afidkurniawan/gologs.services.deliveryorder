@@ -3,21 +3,20 @@
 // Proprietary and confidential.
 // Unauthorized copying of this file is strictly prohibited.
 // -------------------------------------------------------------
-using GoLogs.Services.DeliveryOrder.Api.Models;
-using MediatR;
 
-// ReSharper disable InconsistentNaming
-namespace GoLogs.Services.DeliveryOrder.Api.Commands
+using GoLogs.Services.DeliveryOrder.Api.Models;
+using Microsoft.Extensions.Options;
+using Nirbito.Framework.PostgresClient;
+
+namespace GoLogs.Services.DeliveryOrder.Api.Application.Internals
 {
-    public class CreateOrderCommand : IRequest<int>
+    public class DOOrderContext : PgContext
     {
-        public CreateOrderCommand(ICreateDOOrder doOrder)
+        public DOOrderContext(IOptions<PgContextOptions> options)
+            : base(options)
         {
-            DoOrder = doOrder;
         }
 
-        public CreateOrderCommand() { }
-
-        private ICreateDOOrder DoOrder { get; }
+        public PgTable<DOOrder> DOOrders { get; set; }
     }
 }
