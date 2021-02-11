@@ -135,7 +135,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
                     c.RoutePrefix = String.Empty;
 
                     c.InjectStylesheet("/swagger/custom.css");
-                    c.InjectJavascript("/swagger/custom.js", "text/javascript");
+                    c.InjectJavascript("/swagger/custom.js");
                     c.DocumentTitle = AssemblyName.Name + " | Go-Logs";
                 });
             }
