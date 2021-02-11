@@ -52,7 +52,9 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions, TransactionScopeAsyncFlowOption.Enabled))
             {
                 Check.NotNull(createOrderCommand, nameof(createOrderCommand));
-                var lastData = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"), cancellationToken);
+                var lastData = await _context.DOOrders.FirstOrDefaultAsync(
+                    new Query().Select(nameof(DOOrder.Id)).OrderByDesc(nameof(DOOrder.Id)),
+                    cancellationToken);
                 var lastId = 0;
                 if (lastData != null)
                 {
