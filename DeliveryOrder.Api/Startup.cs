@@ -83,6 +83,8 @@ namespace GoLogs.Services.DeliveryOrder.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                
+                app.UseStaticFiles();
 
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
                 app.UseSwagger();
@@ -95,6 +97,10 @@ namespace GoLogs.Services.DeliveryOrder.Api
                         "swagger/v1/swagger.json",
                         String.Concat(AssemblyName.Name, " v1"));
                     c.RoutePrefix = String.Empty;
+
+                    c.InjectStylesheet("/swagger/custom.css");
+                    c.InjectJavascript("/swagger/custom.js", "text/javascript");
+                    c.DocumentTitle = AssemblyName.Name + " | Go-Logs";
                 });
             }
 
