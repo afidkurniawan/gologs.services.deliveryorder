@@ -15,10 +15,17 @@ using SqlKata;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
 {
+    /// <summary>
+    /// Declare public class handler to get DOOrder by CargoOwnerId.
+    /// </summary>
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
         private readonly DOOrderContext _context;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Handler"/> class.
+        /// </summary>
+        /// <param name="context">Define DOOrderContext.</param>
         public Handler(DOOrderContext context)
         {
             _context = context;
@@ -27,8 +34,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
         /// <summary>
         /// Handle to get an List of DOOrders with the specified CargoOwnerId.
         /// </summary>
-        /// <param name="request">Specified CargoOwnerId.</param>
-        /// <param name="cancellationToken">Specified cancelation token.</param>
+        /// <param name="request">Specified Request.</param>
+        /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>list of <see cref="DOOrder"/>.</returns>
         public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
         {

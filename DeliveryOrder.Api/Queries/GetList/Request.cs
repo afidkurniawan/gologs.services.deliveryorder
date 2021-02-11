@@ -10,8 +10,16 @@ using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
+    /// <summary>
+    /// Declare public class request as parameter on controller to get DOOrders.
+    /// </summary>
     public class Request : IRequest<IList<DOOrder>>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Request"/> class.
+        /// </summary>
+        /// <param name="page">Define Page.</param>
+        /// <param name="pageSize">Define PageSize.</param>
         public Request(int page, int pageSize)
         {
             Page = page;

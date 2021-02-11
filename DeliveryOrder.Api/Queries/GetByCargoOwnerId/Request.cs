@@ -10,8 +10,15 @@ using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
 {
+    /// <summary>
+    /// Declare public class request as parameter on controller to get DOOrder GetByCargoOwnerId.
+    /// </summary>
     public class Request : IRequest<IList<DOOrder>>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Request"/> class.
+        /// </summary>
+        /// <param name="cargoOwnerId">Define CargoOwnerId.</param>
         public Request(int cargoOwnerId)
         {
             CargoOwnerId = cargoOwnerId;

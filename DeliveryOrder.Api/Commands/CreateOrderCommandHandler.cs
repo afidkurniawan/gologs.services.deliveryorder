@@ -16,11 +16,19 @@ using SqlKata;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {
+    /// <summary>
+    /// Class to create DOOrderNumber.
+    /// </summary>
     public class CreateOrderCommandHandler : IRequestHandler<DOOrder, int>
     {
         private readonly DOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateOrderCommandHandler"/> class.
+        /// </summary>
+        /// <param name="context">Define DOOrderContext.</param>
+        /// <param name="problemCollector">Define IProblemCollector.</param>
         public CreateOrderCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
@@ -30,8 +38,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         /// <summary>
         /// Handle to get Create DOOrderNumber.
         /// </summary>
-        /// <param name="createOrderCommand">Specified CargoOwnerID.</param>
-        /// <param name="cancellationToken">Specifiedcancelation token.</param>
+        /// <param name="createOrderCommand">Specified DOOrder.</param>
+        /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>integer.</returns>
         public async Task<int> Handle(DOOrder createOrderCommand, CancellationToken cancellationToken = default)
         {
@@ -40,13 +48,19 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
                 IsolationLevel = IsolationLevel.ReadCommitted,
                 Timeout = TransactionManager.MaximumTimeout
             };
+
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions, TransactionScopeAsyncFlowOption.Enabled))
             {
                 Check.NotNull(createOrderCommand, nameof(createOrderCommand));
-                var lastdata = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"), cancellationToken);
-                var lastid = lastdata.Id;
-                lastid += 1;
-                var dOOrderNumber = "DO" + lastid;
+                var lastData = await _context.DOOrders.FirstOrDefaultAsync(new Query().Select("id").OrderByDesc("id"), cancellationToken);
+                var lastId = 0;
+                if (lastData != null)
+                {
+                    lastId = lastData.Id;
+                }
+
+                lastId += 1;
+                var dOOrderNumber = "DO" + lastId;
                 createOrderCommand.DOOrderNumber = dOOrderNumber;
                 await _context.DOOrders.InsertAsync(createOrderCommand, cancellationToken);
                 scope.Complete();

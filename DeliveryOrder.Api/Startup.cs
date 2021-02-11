@@ -34,21 +34,35 @@ using Swashbuckle.AspNetCore.Swagger;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
+    /// <summary>
+    /// Define public class Startup.
+    /// </summary>
     public class Startup
     {
         private ServiceOptions _rabbitMqOptions;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
+        /// <param name="configuration">Define IConfiguration.</param>
         public Startup(IConfiguration configuration)
         {
             AssemblyName = Assembly.GetEntryAssembly()?.GetName();
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Declare public variable IConfiguration.
+        /// </summary>
         // ReSharper disable once MemberCanBePrivate.Global
         public IConfiguration Configuration { get; }
 
         private AssemblyName AssemblyName { get; }
 
+        /// <summary>
+        /// Declare public method ConfigureServices.
+        /// </summary>
+        /// <param name="services">Define IServiceCollection.</param>
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
@@ -113,6 +127,11 @@ namespace GoLogs.Services.DeliveryOrder.Api
             });
         }
 
+        /// <summary>
+        ///  Declare public method Configure.
+        /// </summary>
+        /// <param name="app">Define IApplicationBuilder.</param>
+        /// <param name="env">Define IWebHostEnvironment.</param>
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {

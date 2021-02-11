@@ -8,6 +8,9 @@ using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
+    /// <summary>
+    /// Initialize DOOrderDto class.
+    /// </summary>
     public class DOOrderDto : IRequest<int>
     {
         /// <summary>

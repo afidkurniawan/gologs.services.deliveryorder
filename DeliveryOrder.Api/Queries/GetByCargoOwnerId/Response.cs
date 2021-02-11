@@ -9,6 +9,9 @@ using GoLogs.Services.DeliveryOrder.Api.Models;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
 {
+    /// <summary>
+    /// Declare public class response as controler return.
+    /// </summary>
     public class Response
     {
         /// <summary>

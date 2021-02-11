@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
+    /// <summary>
+    /// Declare public class ServiceCollectionExtensions.
+    /// </summary>
     public static class ServiceCollectionExtensions
     {
         /// <summary>

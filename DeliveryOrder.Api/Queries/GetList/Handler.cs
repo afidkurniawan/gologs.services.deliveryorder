@@ -16,11 +16,19 @@ using SqlKata;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
 {
+    /// <summary>
+    /// Declare public class handler to get DOOrders.
+    /// </summary>
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
         private readonly DOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Handler"/> class.
+        /// </summary>
+        /// <param name="context">Define DOOrderContext.</param>
+        /// <param name="problemCollector">Define IProblemCollector.</param>
         public Handler(DOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
@@ -30,8 +38,8 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetList
         /// <summary>
         /// Handle to get an List of DOOrder with the specified Page and PageSize.
         /// </summary>
-        /// <param name="request">Specified Page and PageSize.</param>
-        /// <param name="cancellationToken">Specifiedcancelation token.</param>
+        /// <param name="request">Specified Request.</param>
+        /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>list of <see cref="DOOrder"/>.</returns>
         public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
         {

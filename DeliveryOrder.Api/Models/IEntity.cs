@@ -6,6 +6,9 @@
 
 namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
+    /// <summary>
+    /// Initialize public interface IEntity as Base Entity.
+    /// </summary>
     public interface IEntity
     {
         /// <summary>
