@@ -119,7 +119,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                
+
                 app.UseStaticFiles();
 
                 // Enable middleware to serve generated Swagger as a JSON endpoint.
