@@ -16,6 +16,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Controllers
 {
+    /// <summary>
+    /// Public controller DOOrdersController.
+    /// </summary>
     [ApiController]
     [Route("[controller]")]
 
@@ -27,6 +30,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         private readonly IPublishEndpoint _publishEndpoint;
         private readonly IMediator _mediator;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DOOrdersController"/> class.
+        /// </summary>
+        /// <param name="problemCollector">Define IProblemCollector.</param>
+        /// <param name="mapper">Define IMapper.</param>
+        /// <param name="publishEndpoint">Define IPublishEndpoint.</param>
+        /// <param name="mediator">Define IMediator.</param>
         public DOOrdersController(IProblemCollector problemCollector, IMapper mapper,
             IPublishEndpoint publishEndpoint, IMediator mediator)
             : base(problemCollector, mapper, publishEndpoint, mediator)

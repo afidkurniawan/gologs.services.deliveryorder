@@ -6,6 +6,9 @@
 
 namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
+    /// <summary>
+    /// Define public Interface ICreateDOOrder.
+    /// </summary>
     public interface ICreateDOOrder : IEntity
     {
         /// <summary>

@@ -9,11 +9,20 @@ using GoLogs.Interfaces;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
+    /// <summary>
+    /// Initialize public class DOOrder .
+    /// </summary>
     public class DOOrder : DOOrderDto, IDOOrder
     {
+        /// <summary>
+        /// Identity field.
+        /// </summary>
         [Key]
         public int Id { get; set; }
 
+        /// <summary>
+        /// DOOrderNumber field.
+        /// </summary>
         public string DOOrderNumber { get; set; }
     }
 }

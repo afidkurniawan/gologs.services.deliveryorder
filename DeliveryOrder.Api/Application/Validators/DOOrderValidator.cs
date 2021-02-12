@@ -10,6 +10,9 @@ using GoLogs.Services.DeliveryOrder.Api.Models;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Application.Validators
 {
+    /// <summary>
+    /// Public class for validator.
+    /// </summary>
     public class DOOrderValidator : AbstractValidator<DOOrderDto>
     {
         /// <summary>

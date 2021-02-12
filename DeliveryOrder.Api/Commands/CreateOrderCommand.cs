@@ -9,13 +9,23 @@ using MediatR;
 // ReSharper disable InconsistentNaming
 namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {
+    /// <summary>
+    /// Public class for Create Order.
+    /// </summary>
     public class CreateOrderCommand : IRequest<int>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateOrderCommand"/> class.
+        /// </summary>
+        /// <param name="doOrder">Define ICreateDOOrder.</param>
         public CreateOrderCommand(ICreateDOOrder doOrder)
         {
             DoOrder = doOrder;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CreateOrderCommand"/> class.
+        /// </summary>
         public CreateOrderCommand() { }
 
         private ICreateDOOrder DoOrder { get; }

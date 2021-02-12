@@ -9,8 +9,15 @@ using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByNumber
 {
+    /// <summary>
+    /// Declare public class request as parameter on controller to get DOOrder GetByNumber.
+    /// </summary>
     public class Request : IRequest<DOOrder>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Request"/> class.
+        /// </summary>
+        /// <param name="doNumber">Define DoNumber.</param>
         public Request(string doNumber)
         {
             DoNumber = doNumber;
