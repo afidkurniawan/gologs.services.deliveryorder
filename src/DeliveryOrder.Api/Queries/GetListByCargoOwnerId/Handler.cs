@@ -21,7 +21,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
     /// </summary>
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
-        private readonly DOOrderContext _context;
+        private readonly IDOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
         /// </summary>
         /// <param name="context">Define DOOrderContext.</param>
         /// <param name="problemCollector">Define IProblemCollector.</param>
-        public Handler(DOOrderContext context, IProblemCollector problemCollector)
+        public Handler(IDOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
             _problemCollector = problemCollector;
@@ -41,7 +41,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListByCargoOwnerId
         /// <param name="request">Specified Request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>list of <see cref="DOOrder"/>.</returns>
-        public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken = default)
         {
             Check.NotNull(request, nameof(request));
             return await _context.DOOrders.AllAsync(new Query().Where(nameof(DOOrder.CargoOwnerId), request.CargoOwnerId).ForPage(request.Page, request.PageSize), cancellationToken);

@@ -105,6 +105,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
             });
 
             services
+                .AddScoped<IDOOrderContext, DOOrderContext>()
                 .AddScoped<IProblemCollector, ProblemCollector>()
                 .AddFluentValidators()
                 .AddAutoMapper(typeof(Startup));

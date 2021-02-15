@@ -21,7 +21,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
     /// </summary>
     public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, DOOrder>
     {
-        private readonly DOOrderContext _context;
+        private readonly IDOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         /// </summary>
         /// <param name="context">Define DOOrderContext.</param>
         /// <param name="problemCollector">Define IProblemCollector.</param>
-        public CreateOrderCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
+        public CreateOrderCommandHandler(IDOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
             _problemCollector = problemCollector;
@@ -41,7 +41,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         /// <param name="request">Define request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>The <see cref="DOOrder"/>.</returns>
-        public async Task<DOOrder> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<DOOrder> Handle(CreateOrderCommand request, CancellationToken cancellationToken = default)
         {
             var dOOrder = new DOOrder();
             var transactionOptions = new TransactionOptions

@@ -38,7 +38,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Infrastructure.Messaging
         /// <param name="doOrderCreatedEvent">Define DOOrderCreatedEvent.</param>
         /// <param name="cancellationToken">Define CancellationToken.</param>
         /// <returns>DOOrderCreatedEvent.</returns>
-        public async Task Handle(DOOrderCreatedEvent doOrderCreatedEvent, CancellationToken cancellationToken)
+        public async Task Handle(DOOrderCreatedEvent doOrderCreatedEvent, CancellationToken cancellationToken = default)
         {
             Check.NotNull(doOrderCreatedEvent, nameof(doOrderCreatedEvent));
 

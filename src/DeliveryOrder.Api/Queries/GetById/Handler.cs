@@ -20,7 +20,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
     /// </summary>
     public class Handler : IRequestHandler<Request, DOOrder>
     {
-        private readonly DOOrderContext _context;
+        private readonly IDOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
         /// </summary>
         /// <param name="context">Define DOOrderContext.</param>
         /// <param name="problemCollector">Define IProblemCollector.</param>
-        public Handler(DOOrderContext context, IProblemCollector problemCollector)
+        public Handler(IDOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
             _problemCollector = problemCollector;
@@ -40,7 +40,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetById
         /// <param name="request">Specified Request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns><see cref="DOOrder"/>.</returns>
-        public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<DOOrder> Handle(Request request, CancellationToken cancellationToken = default)
         {
             Check.NotNull(request, nameof(request));
             return await _context.DOOrders.FirstOrDefaultAsync(new Query().Where(nameof(DOOrder.Id), request.Id), cancellationToken);

@@ -20,13 +20,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
     /// </summary>
     public class Handler : IRequestHandler<Request, IList<DOOrder>>
     {
-        private readonly DOOrderContext _context;
+        private readonly IDOOrderContext _context;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Handler"/> class.
         /// </summary>
         /// <param name="context">Define DOOrderContext.</param>
-        public Handler(DOOrderContext context)
+        public Handler(IDOOrderContext context)
         {
             _context = context;
         }
@@ -37,7 +37,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetByCargoOwnerId
         /// <param name="request">Specified Request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
         /// <returns>list of <see cref="DOOrder"/>.</returns>
-        public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken)
+        public async Task<IList<DOOrder>> Handle(Request request, CancellationToken cancellationToken = default)
         {
             Check.NotNull(request, nameof(request));
             return await _context.DOOrders.AllAsync(new Query().Where(nameof(DOOrder.CargoOwnerId), request.CargoOwnerId), cancellationToken);

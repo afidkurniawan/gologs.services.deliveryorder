@@ -13,7 +13,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Application.Internals
     /// <summary>
     /// Class DBContext.
     /// </summary>
-    public class DOOrderContext : PgContext
+    public class DOOrderContext : PgContext, IDOOrderContext
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DOOrderContext"/> class.

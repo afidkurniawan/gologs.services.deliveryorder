@@ -6,7 +6,6 @@
 
 using System.ComponentModel.DataAnnotations;
 using GoLogs.Interfaces;
-using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Models
 {
