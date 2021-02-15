@@ -12,7 +12,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
     /// <summary>
     /// Public class request for Create DONumber.
     /// </summary>
-    public class CreateOrderCommand : ICreateDOOrder, IRequest<DOOrder>
+    public class CreateOrderCommand : IRequest<DOOrder>
     {
         /// <summary>
         /// Mandatory property to create doorder number.
