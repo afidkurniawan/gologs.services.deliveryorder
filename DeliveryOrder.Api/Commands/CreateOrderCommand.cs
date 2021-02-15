@@ -10,24 +10,13 @@ using MediatR;
 namespace GoLogs.Services.DeliveryOrder.Api.Commands
 {
     /// <summary>
-    /// Public class for Create Order.
+    /// Public class request for Create DONumber.
     /// </summary>
-    public class CreateOrderCommand : IRequest<int>
+    public class CreateOrderCommand : ICreateDOOrder, IRequest<DOOrder>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateOrderCommand"/> class.
+        /// Mandatory property to create doorder number.
         /// </summary>
-        /// <param name="doOrder">Define ICreateDOOrder.</param>
-        public CreateOrderCommand(ICreateDOOrder doOrder)
-        {
-            DoOrder = doOrder;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CreateOrderCommand"/> class.
-        /// </summary>
-        public CreateOrderCommand() { }
-
-        private ICreateDOOrder DoOrder { get; }
+        public int CargoOwnerId { get; set; }
     }
 }
