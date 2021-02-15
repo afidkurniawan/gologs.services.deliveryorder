@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <RootNamespace>GoLogs.Contracts</RootNamespace>
+        <PackageId>GoLogs.Contracts</PackageId>
+        <Authors>IqbalN</Authors>
+        <Company>PT Gologs Aplikasi Indonesia</Company>
+        <Product>GoLogs.Contracts</Product>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageVersion>0.1.0</PackageVersion>
+        <AssemblyName>GoLogs.Contracts</AssemblyName>
+        <Title>GoLogs.Contracts</Title>
+        <Copyright>Go-Logs 2020</Copyright>
+        <AssemblyVersion>0.1.0</AssemblyVersion>
+        <FileVersion>0.1.0</FileVersion>
+        <NeutralLanguage>en-US</NeutralLanguage>
+        <Description>Contracts for backend events, messaging, and communications in general.</Description>
+    </PropertyGroup>
+
+</Project>
