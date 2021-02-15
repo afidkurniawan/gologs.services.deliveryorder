@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
+using GoLogs.Services.DeliveryOrder.Api.Commands;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MassTransit;
 using MediatR;
@@ -136,13 +137,12 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateAsync([FromBody] DOOrderDto doOrderInput)
+        public async Task<ActionResult> CreateAsync([FromBody] CreateOrderCommand doOrderInput)
         {
-            var doOrder = _mapper.Map<DOOrder>(doOrderInput);
             var errorResult = CheckProblems();
-            await _mediator.Send(doOrder);
-            await _publishEndpoint.Publish<IDOOrder>(new { doOrder.DOOrderNumber, doOrder.CargoOwnerId });
-            return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = doOrder.Id }, doOrder);
+            var result = await _mediator.Send(doOrderInput);
+            await _publishEndpoint.Publish<IDOOrder>(new { result.DOOrderNumber, result.CargoOwnerId });
+            return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = result.Id }, result);
         }
     }
 }

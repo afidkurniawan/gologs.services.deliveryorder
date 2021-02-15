@@ -9,11 +9,11 @@ namespace GoLogs.Services.DeliveryOrder.Api.Models
     /// <summary>
     /// Define public Interface ICreateDOOrder.
     /// </summary>
-    public interface ICreateDOOrder : IEntity
+    public interface ICreateDOOrder
     {
         /// <summary>
-        /// Mandatory Parameter to create DOOrderNumber.
+        /// Associated CargoOwnerId.
         /// </summary>
-        public int CargoOwnerId { get; }
+        public int CargoOwnerId { get; set; }
     }
 }
