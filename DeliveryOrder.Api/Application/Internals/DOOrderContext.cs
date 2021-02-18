@@ -25,8 +25,13 @@ namespace GoLogs.Services.DeliveryOrder.Api.Application.Internals
         }
 
         /// <summary>
-        /// Declare Table.
+        /// Declare Table DOOrder.
         /// </summary>
         public PgTable<DOOrder> DOOrders { get; set; }
+
+        /// <summary>
+        /// Declare Table History.
+        /// </summary>
+        public PgTable<History> Histories { get; set; }
     }
 }

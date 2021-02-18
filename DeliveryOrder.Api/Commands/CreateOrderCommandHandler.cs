@@ -36,7 +36,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands
         }
 
         /// <summary>
-        /// Handle to get Create DOOrderNumber.
+        /// Handle to Create DOOrderNumber.
         /// </summary>
         /// <param name="request">Define request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
