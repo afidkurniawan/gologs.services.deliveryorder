@@ -9,10 +9,8 @@ using AutoMapper;
 using GoLogs.Contracts.Events;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
-using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using GoLogs.Services.DeliveryOrder.Api.Commands;
 using GoLogs.Services.DeliveryOrder.Api.Models;
-using GoLogs.Services.DeliveryOrder.Api.Repository;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -40,6 +38,43 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             _mapper = mapper;
             _publishEndpoint = publishEndpoint;
             _mediator = mediator;
+        }
+
+        /// <summary>
+        /// Get List of History with paging and associated with the specified DOOrderNumber (optional).
+        /// </summary>
+        /// <param name="dOOrderNumber">Specified DOOrderNumber (string).</param>
+        /// <param name="page">Specified Page (int).</param>
+        /// <param name="pageSize">Specified PageSize (int).</param>
+        /// <returns>The <see cref="IDOOrder"/>.</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IList<HistoriesModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<IList<IDOOrder>>> GetAsync([FromQuery] string dOOrderNumber, [FromQuery] int page, [FromQuery] int pageSize)
+        {
+            var errorResult = CheckProblems();
+            IList<HistoriesModel> response;
+            if (page < 0 || pageSize < 0)
+            {
+                return BadRequest();
+            }
+
+            if (dOOrderNumber != null)
+            {
+                response = await _mediator.Send(new Queries.GetHistoriesByDOOrderNumber.Request(dOOrderNumber, page, pageSize));
+            }
+            else
+            {
+                response = await _mediator.Send(new Queries.GetHistories.Request(page, pageSize));
+            }
+
+            if (response.Count == 0)
+            {
+                return NotFound();
+            }
+
+            return errorResult ?? Ok(response);
         }
 
         /// <summary>
