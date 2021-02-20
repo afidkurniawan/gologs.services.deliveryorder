@@ -20,7 +20,7 @@ using MediatR;
 using Newtonsoft.Json;
 using SqlKata;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.HistoryCreated
 {
     public class CreateHistoryOrderCommandHandler : IRequestHandler<CreateHistoryOrderCommand, History>
     {
