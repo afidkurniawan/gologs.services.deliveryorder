@@ -33,5 +33,15 @@ namespace GoLogs.Services.DeliveryOrder.Api.Application.Internals
         /// Declare Table History.
         /// </summary>
         public PgTable<History> Histories { get; set; }
+
+        /// <summary>
+        /// Declare Table Master Notify Party.
+        /// </summary>
+        public PgTable<NotifyParty> NotifyParties { get; set; }
+
+        /// <summary>
+        /// Declare Table DO Notify Party.
+        /// </summary>
+        public PgTable<DONotifyParty> DONotifyParties { get; set; }
     }
 }
