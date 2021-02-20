@@ -12,7 +12,7 @@ using GoLogs.Services.DeliveryOrder.Api.Events;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.HistoryCreated
 {
     public class CreateHistoryOrderCommand : IRequest<History>
     {

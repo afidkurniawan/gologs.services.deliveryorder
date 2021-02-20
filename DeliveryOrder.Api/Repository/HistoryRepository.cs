@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using GoLogs.Services.DeliveryOrder.Api.Application.Internals;
 using GoLogs.Services.DeliveryOrder.Api.Commands;
+using GoLogs.Services.DeliveryOrder.Api.Commands.HistoryCreated;
 using GoLogs.Services.DeliveryOrder.Api.Events;
 using Newtonsoft.Json;
 using SqlKata;

@@ -9,7 +9,7 @@ using AutoMapper;
 using GoLogs.Contracts.Events;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
-using GoLogs.Services.DeliveryOrder.Api.Commands;
+using GoLogs.Services.DeliveryOrder.Api.Commands.HistoryCreated;
 using GoLogs.Services.DeliveryOrder.Api.Models;
 using MassTransit;
 using MediatR;
