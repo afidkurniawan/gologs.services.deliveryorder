@@ -5,20 +5,25 @@
 // -------------------------------------------------------------
 
 using System.Collections.Generic;
-using MediatR;
+using GoLogs.Interfaces;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Update
 {
-    public class CreateNotifyPartyCommand : IRequest<CreateNotifyPartyResponse>
+    public class UpdateNotifyPartyResponse : IEntity
     {
         /// <summary>
-        /// Mandatory property to create NotifyParty.
+        /// Mandatory property to create doorder number.
         /// </summary>
         public int CargoOwnerId { get; set; }
 
         /// <summary>
-        /// list NotifyAddress is a mandatory Parameter to CREATE NotifyParty at least 1.
+        /// list NotifyAddress is a mandatory Parameter to CREATE Notify at least 1.
         /// </summary>
         public List<string> NotifyAddress { get; set; }
+
+        /// <summary>
+        /// Id.
+        /// </summary>
+        public int Id { get; set; }
     }
 }
