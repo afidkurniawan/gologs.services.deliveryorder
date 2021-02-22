@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.NotifParty.Create
 {
     public class CreateNotifyPartyCommand : IRequest<CreateNotifyPartyResponse>
     {

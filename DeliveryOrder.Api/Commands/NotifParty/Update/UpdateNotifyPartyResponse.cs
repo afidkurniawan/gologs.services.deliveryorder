@@ -7,12 +7,9 @@
 using System.Collections.Generic;
 using GoLogs.Interfaces;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetNotifyPartyByCargoOwnerId
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.NotifParty.Update
 {
-    /// <summary>
-    /// Declare public class response as controler return.
-    /// </summary>
-    public class Response : IEntity
+    public class UpdateNotifyPartyResponse : IEntity
     {
         /// <summary>
         /// Mandatory property to create doorder number.

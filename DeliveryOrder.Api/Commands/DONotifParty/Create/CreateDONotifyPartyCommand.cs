@@ -7,20 +7,17 @@
 using System.Collections.Generic;
 using MediatR;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Models
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.DONotifParty.Create
 {
-    /// <summary>
-    /// Initialize DONotifyDto class.
-    /// </summary>
-    public class DONotifyPartyDto : IRequest<string>
+    public class CreateDONotifyPartyCommand : IRequest<CreateDONotifyPartyResponse>
     {
         /// <summary>
-        /// DOOrderNumber is a mandatory Parameter to CREATE DONotify.
+        /// Mandatory property to create NotifyParty.
         /// </summary>
         public string DOOrderNumber { get; set; }
 
         /// <summary>
-        /// list NotifyAddress is a mandatory Parameter to CREATE DONotify at least 1.
+        /// list NotifyAddress is a mandatory Parameter to CREATE NotifyParty at least 1.
         /// </summary>
         public List<string> NotifyAddress { get; set; }
     }

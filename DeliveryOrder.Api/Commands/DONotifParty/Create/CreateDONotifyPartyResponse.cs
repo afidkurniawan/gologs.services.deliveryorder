@@ -7,14 +7,14 @@
 using System.Collections.Generic;
 using GoLogs.Interfaces;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Update
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.DONotifParty.Create
 {
-    public class UpdateNotifyPartyResponse : IEntity
+    public class CreateDONotifyPartyResponse : IEntity
     {
         /// <summary>
         /// Mandatory property to create doorder number.
         /// </summary>
-        public int CargoOwnerId { get; set; }
+        public string DOOrderNumber { get; set; }
 
         /// <summary>
         /// list NotifyAddress is a mandatory Parameter to CREATE Notify at least 1.

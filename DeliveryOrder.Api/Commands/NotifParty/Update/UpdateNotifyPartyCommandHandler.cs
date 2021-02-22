@@ -17,7 +17,7 @@ using MediatR;
 using Nirbito.Framework.Core;
 using SqlKata;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Update
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.NotifParty.Update
 {
     /// <summary>
     /// Class to create NotifyParty.

@@ -6,7 +6,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Transactions;
@@ -17,37 +16,38 @@ using MediatR;
 using Nirbito.Framework.Core;
 using SqlKata;
 
-namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create
+namespace GoLogs.Services.DeliveryOrder.Api.Commands.DONotifParty.Create
 {
     /// <summary>
     /// Class to create NotifyParty.
     /// </summary>
-    public class CreateNotifyPartyCommandHandler : IRequestHandler<CreateNotifyPartyCommand, CreateNotifyPartyResponse>
+    public class CreateDONotifyPartyCommandHandler : IRequestHandler<CreateDONotifyPartyCommand, CreateDONotifyPartyResponse>
     {
         private readonly DOOrderContext _context;
         private readonly IProblemCollector _problemCollector;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CreateNotifyPartyCommandHandler"/> class.
+        /// Initializes a new instance of the <see cref="CreateDONotifyPartyCommandHandler"/> class.
         /// </summary>
         /// <param name="context">Define DOOrderContext.</param>
         /// <param name="problemCollector">Define IProblemCollector.</param>
-        public CreateNotifyPartyCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
+        public CreateDONotifyPartyCommandHandler(DOOrderContext context, IProblemCollector problemCollector)
         {
             _context = context;
             _problemCollector = problemCollector;
         }
 
         /// <summary>
-        /// Handle to Create Notify Party.
+        /// Handle to Create DO Notify Party.
         /// </summary>
         /// <param name="request">Define request.</param>
         /// <param name="cancellationToken">Specified CancellationToken.</param>
-        /// <returns>The List <see cref="NotifyParty"/>.</returns>
-        public async Task<CreateNotifyPartyResponse> Handle(CreateNotifyPartyCommand request, CancellationToken cancellationToken)
+        /// <returns>The List <see cref="DONotifyParty"/>.</returns>
+        public async Task<CreateDONotifyPartyResponse> Handle(CreateDONotifyPartyCommand request, CancellationToken cancellationToken)
         {
-            var party = new CreateNotifyPartyResponse { CargoOwnerId = request.CargoOwnerId, NotifyAddress = new List<string>() };
-            var notifyParty = new NotifyParty();
+            var party = new CreateDONotifyPartyResponse { DOOrderNumber = request.DOOrderNumber, NotifyAddress = new List<string>() };
+            var notifyParty = new DONotifyParty();
+
             var transactionOptions = new TransactionOptions
             {
                 IsolationLevel = IsolationLevel.ReadCommitted,
@@ -57,8 +57,18 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create
             using (var scope = new TransactionScope(TransactionScopeOption.RequiresNew, transactionOptions, TransactionScopeAsyncFlowOption.Enabled))
             {
                 Check.NotNull(request, nameof(request));
-                var notifyPrty = await _context.NotifyParties.FirstOrDefaultAsync(
-                    new Query().Where(nameof(NotifyParty.CargoOwnerId), request.CargoOwnerId),
+
+                var dONumber = await _context.DOOrders.FirstOrDefaultAsync(
+                    new Query().Where(nameof(DOOrder.DOOrderNumber), request.DOOrderNumber),
+                    cancellationToken);
+
+                if (dONumber == null)
+                {
+                    return null; // not found
+                }
+
+                var notifyPrty = await _context.DONotifyParties.FirstOrDefaultAsync(
+                    new Query().Where(nameof(DONotifyParty.DOOrderNumber), request.DOOrderNumber),
                     cancellationToken);
 
                 if (notifyPrty == null)
@@ -81,14 +91,14 @@ namespace GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create
                         }
                     }
 
-                    notifyParty.CargoOwnerId = request.CargoOwnerId;
+                    notifyParty.DOOrderNumber = request.DOOrderNumber;
                     notifyParty.NotifyAddress = emails;
-                    await _context.NotifyParties.InsertAsync(notifyParty, cancellationToken);
+                    await _context.DONotifyParties.InsertAsync(notifyParty, cancellationToken);
                     party.Id = notifyParty.Id;
                 }
                 else
                 {
-                    return null;
+                    return new CreateDONotifyPartyResponse(); // conflic
                 }
 
                 scope.Complete();

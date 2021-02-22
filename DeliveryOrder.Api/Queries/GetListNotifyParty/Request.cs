@@ -5,7 +5,6 @@
 // -------------------------------------------------------------
 
 using System.Collections.Generic;
-using GoLogs.Services.DeliveryOrder.Api.Models;
 using MediatR;
 
 namespace GoLogs.Services.DeliveryOrder.Api.Queries.GetListNotifyParty

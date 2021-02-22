@@ -7,13 +7,10 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
-using GoLogs.Events;
 using GoLogs.Framework.Mvc;
 using GoLogs.Interfaces;
-using GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Create;
-using GoLogs.Services.DeliveryOrder.Api.Commands.NofityParty.Update;
-using GoLogs.Services.DeliveryOrder.Api.Models;
-using GoLogs.Services.DeliveryOrder.Api.Queries;
+using GoLogs.Services.DeliveryOrder.Api.Commands.NotifParty.Create;
+using GoLogs.Services.DeliveryOrder.Api.Commands.NotifParty.Update;
 using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.Http;
