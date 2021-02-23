@@ -75,7 +75,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
         }
 
         /// <summary>
-        /// Get List of Notify Party associated with the specified Cargo Owner Id (optional).
+        /// Get List of Notify Party.
         /// </summary>
         /// <param name="page">Specified Page (int).</param>
         /// <param name="pageSize">Specified PageSize (int).</param>
