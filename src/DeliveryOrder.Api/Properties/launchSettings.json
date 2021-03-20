@@ -15,7 +15,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Customer.Api": {
+    "DeliveryOrder.Api": {
       "commandName": "Project",
       "launchBrowser": true,
       "applicationUrl": "https://localhost:57058;http://localhost:50022",

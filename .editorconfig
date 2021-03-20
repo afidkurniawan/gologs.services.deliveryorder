@@ -290,10 +290,11 @@ dotnet_naming_style.prefix_type_parameters_with_t_style.capitalization = pascal_
 dotnet_naming_style.prefix_type_parameters_with_t_style.required_prefix = T
 
 #### Analyzers ####
-dotnet_diagnostic.IDE0001.severity = suggestion
-dotnet_diagnostic.IDE0002.severity = suggestion
-dotnet_diagnostic.IDE0004.severity = suggestion
-dotnet_diagnostic.IDE0005.severity = suggestion
+dotnet_diagnostic.IDE0001.severity = warning
+dotnet_diagnostic.IDE0002.severity = warning
+dotnet_diagnostic.IDE0003.severity = warning
+dotnet_diagnostic.IDE0004.severity = warning
+dotnet_diagnostic.IDE0005.severity = warning
 dotnet_diagnostic.IDE0035.severity = warning
 dotnet_diagnostic.IDE0051.severity = warning
 dotnet_diagnostic.IDE0059.severity = warning
