@@ -202,6 +202,19 @@ namespace GoLogs.Services.DeliveryOrder.Api.UnitTests.Controllers
         }
 
         [Fact]
+        public async Task GetAsync_OrderNotExists_ReturnsNotFound()
+        {
+            var controller = new DOOrdersController(_mockProblemCollector.Object, _mockMapper.Object,
+                _mockPublishEndpoint.Object, _mockMediator.Object);
+
+            _mockMediator.Setup(m => m.Send(It.IsAny<DOQueries.GetList.Request>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(() => new List<DOOrder>());
+            var result = await controller.GetAsync(3, 1, 3);
+
+            Assert.IsType<NotFoundResult>(result);
+        }
+
+        [Fact]
         public async Task CreateAsync_ValidCommand_ReturnsCreatedAtAction()
         {
             const int NewId = 4;
