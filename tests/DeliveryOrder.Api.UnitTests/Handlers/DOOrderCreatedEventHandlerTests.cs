@@ -5,8 +5,12 @@
 // -------------------------------------------------------------
 
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using GoLogs.Events;
+using GoLogs.Interfaces;
 using GoLogs.Services.DeliveryOrder.Api.Infrastructure.Messaging;
+using GoLogs.Services.DeliveryOrder.Api.Infrastructure.Messaging.Events;
 using MassTransit;
 using Moq;
 using Xunit;
@@ -28,6 +32,32 @@ namespace GoLogs.Services.DeliveryOrder.Api.UnitTests.Handlers
             var handler = new DOOrderCreatedEventHandler(_mockPublishEndpoint.Object);
 
             await Assert.ThrowsAsync<ArgumentNullException>(() => handler.Handle(null));
+        }
+
+        [Fact]
+        public async Task Handle_DOOrderCreated_EventPublishedOnce()
+        {
+            var order = new Mock<IDOOrder>().Object;
+            var createdEvent = new DOOrderCreatedEvent(order);
+            var cancellationToken = CancellationToken.None;
+            _mockPublishEndpoint
+                .Setup(endpoint =>
+                    endpoint.Publish<IDOOrderCreatedEvent>(
+                        It.Is<object>(
+                            o => o.GetType().GetProperty(nameof(DOOrderCreatedEvent.DOOrder)).GetValue(o) == order),
+                        cancellationToken))
+                .Returns(Task.CompletedTask).Verifiable();
+            var handler = new DOOrderCreatedEventHandler(_mockPublishEndpoint.Object);
+
+            await handler.Handle(createdEvent, cancellationToken);
+
+            _mockPublishEndpoint.Verify(
+                endpoint =>
+                    endpoint.Publish<IDOOrderCreatedEvent>(
+                        It.Is<object>(
+                            o => o.GetType().GetProperty(nameof(DOOrderCreatedEvent.DOOrder)).GetValue(o) == order),
+                        cancellationToken),
+                Times.Once());
         }
     }
 }
