@@ -48,7 +48,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
         /// <param name="configuration">Define IConfiguration.</param>
         public Startup(IConfiguration configuration)
         {
-            AssemblyName = Assembly.GetEntryAssembly()?.GetName();
+            AssemblyName = Assembly.GetAssembly(typeof(Startup)).GetName();
             Configuration = configuration;
         }
 
