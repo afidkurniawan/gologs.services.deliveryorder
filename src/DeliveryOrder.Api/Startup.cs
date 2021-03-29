@@ -30,6 +30,7 @@ using Microsoft.OpenApi.Models;
 using Nirbito.Framework.PostgresClient;
 using Nirbito.Framework.PostgresClient.DependencyInjectionExtensions;
 using Nirbito.Framework.PostgresClient.ManagedColumns;
+using Serilog;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace GoLogs.Services.DeliveryOrder.Api
@@ -161,6 +162,7 @@ namespace GoLogs.Services.DeliveryOrder.Api
             }
 
             app.UseRouting();
+            app.UseSerilogRequestLogging();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

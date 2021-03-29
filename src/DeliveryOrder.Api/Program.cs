@@ -6,6 +6,7 @@
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace GoLogs.Services.DeliveryOrder.Api
 {
@@ -32,6 +33,10 @@ namespace GoLogs.Services.DeliveryOrder.Api
         /// <returns><see cref="IHostBuilder"/>.</returns>
         public static IHostBuilder CreateHostBuilder(string[] args) =>
              Host.CreateDefaultBuilder(args)
+                 .UseSerilog((context, services, configuration) => configuration
+                     .ReadFrom.Configuration(context.Configuration)
+                     .ReadFrom.Services(services)
+                     .Enrich.FromLogContext())
                  .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
