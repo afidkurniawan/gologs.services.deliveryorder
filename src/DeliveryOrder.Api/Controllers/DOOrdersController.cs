@@ -142,7 +142,7 @@ namespace GoLogs.Services.DeliveryOrder.Api.Controllers
             var errorResult = CheckProblems();
             var result = await _mediator.Send(doOrderInput);
             await _publishEndpoint.Publish<IDOOrder>(new { result.DOOrderNumber, result.CargoOwnerId });
-            return errorResult ?? CreatedAtAction(Url.Action(nameof(GetAsync)), new { id = result.Id }, result);
+            return errorResult ?? CreatedAtAction(HttpMethods.Get, new { id = result.Id }, result);
         }
     }
 }
